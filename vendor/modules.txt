@@ -1,0 +1,40 @@
+# github.com/fatih/color v1.7.0
+github.com/fatih/color
+# github.com/frankbraun/codechain v0.0.0-20190717131426-ed1843f893b5
+github.com/frankbraun/codechain/archive
+github.com/frankbraun/codechain/hashchain
+github.com/frankbraun/codechain/hashchain/internal/state
+github.com/frankbraun/codechain/hashchain/linktype
+github.com/frankbraun/codechain/internal/ascii85
+github.com/frankbraun/codechain/internal/base64
+github.com/frankbraun/codechain/internal/def
+github.com/frankbraun/codechain/patchfile
+github.com/frankbraun/codechain/secpkg
+github.com/frankbraun/codechain/ssot
+github.com/frankbraun/codechain/sync
+github.com/frankbraun/codechain/tree
+github.com/frankbraun/codechain/util
+github.com/frankbraun/codechain/util/file
+github.com/frankbraun/codechain/util/gnumake
+github.com/frankbraun/codechain/util/hex
+github.com/frankbraun/codechain/util/home
+github.com/frankbraun/codechain/util/homedir
+github.com/frankbraun/codechain/util/lockfile
+github.com/frankbraun/codechain/util/log
+github.com/frankbraun/codechain/util/time
+# github.com/frankbraun/go-diff v1.0.0
+github.com/frankbraun/go-diff/diffmatchpatch
+# github.com/mattn/go-colorable v0.1.4
+github.com/mattn/go-colorable
+# github.com/mattn/go-isatty v0.0.10
+github.com/mattn/go-isatty
+# golang.org/x/crypto v0.0.0-20191029031824-8986dd9e96cf
+golang.org/x/crypto/ed25519
+golang.org/x/crypto/ed25519/internal/edwards25519
+golang.org/x/crypto/internal/subtle
+golang.org/x/crypto/nacl/secretbox
+golang.org/x/crypto/poly1305
+golang.org/x/crypto/salsa20/salsa
+# golang.org/x/sys v0.0.0-20191029155521-f43be2a4598c
+golang.org/x/sys/cpu
+golang.org/x/sys/unix
