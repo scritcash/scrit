@@ -2,7 +2,7 @@ prefix ?= /usr/local
 exec_prefix ?= $(prefix)
 bindir ?= $(exec_prefix)/bin
 
-.PHONY: all install uninstall test update-vendor
+.PHONY: all install uninstall test fmt update-vendor
 
 all:
 	env GO111MODULE=on go build -mod vendor -v ./cmd/...
@@ -16,6 +16,10 @@ uninstall:
 test:
 	go get github.com/frankbraun/gocheck
 	gocheck -g -c -v cmd
+
+fmt:
+	pandoc --standalone -o tmp.md -s README.md
+	mv tmp.md README.md
 
 update-vendor:
 	rm -rf vendor
