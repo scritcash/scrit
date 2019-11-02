@@ -15,7 +15,7 @@ uninstall:
 
 test:
 	go get github.com/frankbraun/gocheck
-	gocheck -g -c -v
+	gocheck -g -c -v cmd
 
 update-vendor:
 	rm -rf vendor
