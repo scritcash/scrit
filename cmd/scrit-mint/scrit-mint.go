@@ -1,3 +1,4 @@
+// scrit-mint is a Scrit mint.
 package main
 
 import (

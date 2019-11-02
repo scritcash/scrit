@@ -1,3 +1,4 @@
+// scrit-wallet is a Scrit wallet.
 package main
 
 import (

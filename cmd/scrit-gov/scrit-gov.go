@@ -1,3 +1,4 @@
+// scrit-gov is a government helper tool for Scrit.
 package main
 
 import (

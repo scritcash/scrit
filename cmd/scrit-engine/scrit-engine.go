@@ -1,3 +1,4 @@
+// scrit-engine is the low-level DBC engine for Scrit.
 package main
 
 import (
