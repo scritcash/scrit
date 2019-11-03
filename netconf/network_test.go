@@ -41,6 +41,27 @@ func TestNetworkValidate(t *testing.T) {
 			},
 			ErrSignEpochWrongBoundaries,
 		},
+		{
+			Network{
+				[]NetworkEpoch{
+					NetworkEpoch{
+						M:           8,
+						N:           10,
+						SignStart:   t1,
+						SignEnd:     t2,
+						ValidateEnd: t4,
+					},
+					NetworkEpoch{
+						M:           8,
+						N:           10,
+						SignStart:   t2,
+						SignEnd:     t3,
+						ValidateEnd: t4,
+					},
+				},
+			},
+			ErrValidationLongerThanNextSigning,
+		},
 	}
 	for _, testCase := range testCases {
 		err := testCase.net.Validate()

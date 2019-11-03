@@ -29,3 +29,7 @@ var ErrSignEpochEndNotBeforeValidateEnd = errors.New("netconf: signing epoch end
 // ErrSignEpochWrongBoundaires is returned when the signing epoch boundaries
 // do not match exactly.
 var ErrSignEpochWrongBoundaries = errors.New("netconf: signing epoch boundaries do not match exactly")
+
+// ErrValidationLongerThanNextSiging is returned when the validation period is
+// longer than the next signing epoch.
+var ErrValidationLongerThanNextSigning = errors.New("netconf: validation period is longer than next signing epoch")

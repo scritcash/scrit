@@ -9,6 +9,7 @@ var (
 	t1 time.Time
 	t2 time.Time
 	t3 time.Time
+	t4 time.Time
 )
 
 func init() {
@@ -22,6 +23,10 @@ func init() {
 		panic(err)
 	}
 	t3, err = time.Parse(time.RFC3339, "2006-03-02T15:04:05Z")
+	if err != nil {
+		panic(err)
+	}
+	t4, err = time.Parse(time.RFC3339, "2006-04-02T15:04:05Z")
 	if err != nil {
 		panic(err)
 	}
