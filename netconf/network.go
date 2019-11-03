@@ -8,8 +8,8 @@ type Network struct {
 // NetworkEpoch globally defines a verification epoch (signing plus validation
 // epoch) on the network.
 type NetworkEpoch struct {
-	m                       uint64           // the quorum
-	n                       uint64           // total number of mints
+	M                       uint64           // the quorum
+	N                       uint64           // total number of mints
 	SignStart               string           // start of signing epoch
 	SignEnd                 string           // end of signing epoch
 	ValidateEnd             string           // end of validation epoch
