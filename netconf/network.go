@@ -32,11 +32,15 @@ func (net *Network) Validate() error {
 		}
 	}
 	// validate network epoch transitions
-	// TODO
-
-	// sign start n+1 == sign end n
+	for i := 1; i < len(net.NetworkEpochs); i++ {
+		// sign end n-1 == sign start n
+		if net.NetworkEpochs[i-1].SignEnd != net.NetworkEpochs[i].SignStart {
+			return ErrSignEpochWrongBoundaries
+		}
+	}
 
 	// validation end n <= sign end n+1
+	// TODO
 
 	return nil
 }
