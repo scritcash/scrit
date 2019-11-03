@@ -1,5 +1,9 @@
 package netconf
 
+import (
+	"time"
+)
+
 // Mint defines the key list of a single mint for all epochs.
 type Mint struct {
 	Epochs []MintEpoch // corresponding to global epochs
@@ -9,9 +13,9 @@ type Mint struct {
 // where to reach the mint.
 type MintEpoch struct {
 	URLs        []string     // how to each the mint
-	SignStart   string       // start of signing epoch
-	SignEnd     string       // end of signing epoch
-	ValidateEnd string       // end of validation epoch
+	SignStart   time.Time    // start of signing epoch
+	SignEnd     time.Time    // end of signing epoch
+	ValidateEnd time.Time    // end of validation epoch
 	KeyList     []SigningKey // the key list
 }
 

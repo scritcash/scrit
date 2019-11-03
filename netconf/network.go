@@ -1,51 +1,51 @@
 package netconf
 
+import (
+	"encoding/json"
+	"io/ioutil"
+)
+
 // Network defines a Scrit network.
 type Network struct {
-	Epochs []NetworkEpoch // global list of signing epochs
+	NetworkEpochs []NetworkEpoch // global list of signing epochs
 }
 
-// NetworkEpoch globally defines a verification epoch (signing plus validation
-// epoch) on the network.
-type NetworkEpoch struct {
-	M                       uint64           // the quorum
-	N                       uint64           // total number of mints
-	SignStart               string           // start of signing epoch
-	SignEnd                 string           // end of signing epoch
-	ValidateEnd             string           // end of validation epoch
-	MintsAdded              []IdentityKey    // mints added in this epoch
-	MintsRemoved            []IdentityKey    // mints removed in this epoch
-	MintsReplaced           []KeyReplacement // mints replaced in this epoch
-	DBCTypesAdded           []DBCType        // DBC types added in this epoch
-	DBCTypesRemoved         []DBCType        // DBC types removed in this epoch
-	MonetarySupplyIncrease  []Note           // new notes to print
-	MonetarySupplyReduction []Note           // TODO: define burn process
+// Load a network configuration from filename and return the Network struct.
+func Load(filename string) (*Network, error) {
+	data, err := ioutil.ReadFile(filename)
+	if err != nil {
+		return nil, err
+	}
+	var net Network
+	if err := json.Unmarshal(data, &net); err != nil {
+		return nil, err
+	}
+	return &net, err
 }
 
-// IdentityKey defines a mint identity key.
-type IdentityKey struct {
-	SigAlgo string // signature algorithm
-	PubKey  []byte // public key
+// Validate the net configuration.
+func (net *Network) Validate() error {
+	// validate each network epoch
+	for _, e := range net.NetworkEpochs {
+		if err := e.Validate(); err != nil {
+			return err
+		}
+	}
+	// validate network epoch transitions
+	// TODO
+
+	// sign start n+1 == sign end n
+
+	// validation end n <= sign end n+1
+
+	return nil
 }
 
-// KeyReplacement defines a mint identity key replacement.
-type KeyReplacement struct {
-	NewKey    IdentityKey // the new identity key
-	OldKey    IdentityKey // the replaced identity key
-	Signature string      // of new key by replaced key
-}
-
-// DBCType defines a DBC type.
-type DBCType struct {
-	Currency string // the DBC currency
-	Amount   uint64 // per DBC
-}
-
-// Note defines newly printed or burned DBCs.
-type Note struct {
-	Random         [16]byte // nonce
-	Quantity       uint64   // number of DBCs
-	Currency       string   // DBC currency
-	Amount         uint64   // per DBC
-	ReceiverPubKey []byte   // recipient
+// Marshal net as string.
+func (net *Network) Marshal() string {
+	jsn, err := json.MarshalIndent(net, "", "  ")
+	if err != nil {
+		panic(err) // should never happen
+	}
+	return string(jsn)
 }
