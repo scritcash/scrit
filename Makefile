@@ -15,7 +15,7 @@ uninstall:
 
 test:
 	go get github.com/frankbraun/gocheck
-	gocheck -g -c -v cmd
+	gocheck -g -c -v cmd netconf
 
 fmt:
 	pandoc --standalone -o tmp.md -s README.md
