@@ -69,17 +69,13 @@ func (epoch *NetworkEpoch) Validate() error {
 	}
 
 	// sign epoch start < sign epoch end
-	/*
-		if !epoch.SignStart.Before(epoch.SignEnd) {
-			return ErrSignEpochStartAfterEnd
-		}
-	*/
+	if !epoch.SignStart.Before(epoch.SignEnd) {
+		return ErrSignEpochStartNotBeforeSignEnd
+	}
 	// sign epoch end < validation epoch end
-	/*
-		if !epoch.Sign.End(epoch.ValidateEnd) {
-			return ErrSignEpochAfterValidate
-		}
-	*/
+	if !epoch.SignEnd.Before(epoch.ValidateEnd) {
+		return ErrSignEpochEndNotBeforeValidateEnd
+	}
 
 	return nil
 }

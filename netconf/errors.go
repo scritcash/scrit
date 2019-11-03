@@ -17,3 +17,11 @@ var ErrMGreaterN = errors.New("netconf: quorum M is greater than the number of m
 // ErrQuorumTooSmall is return when the qurorum is smaller or equal the number
 // of mints N divided by 2.
 var ErrQuorumTooSmall = errors.New("netconf: quorum M too small (must be > n/2)")
+
+// ErrSignEpochStartNotBeforeEnd is return when the signing epoch start is not
+// before the end.
+var ErrSignEpochStartNotBeforeSignEnd = errors.New("netconf: signing epoch start is not before signing end")
+
+// ErrSignEpochEndNotBeforeValidate is return when the signing epoch start is
+// not before the end.
+var ErrSignEpochEndNotBeforeValidateEnd = errors.New("netconf: signing epoch end is not before end validate end")
