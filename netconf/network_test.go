@@ -14,3 +14,41 @@ func TestLoad(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestNetworkValidate(t *testing.T) {
+	testCases := []struct {
+		net       Network
+		errorCode error
+	}{
+		{
+			Network{
+				[]NetworkEpoch{
+					NetworkEpoch{
+						M:           8,
+						N:           10,
+						SignStart:   t1,
+						SignEnd:     t2,
+						ValidateEnd: t3,
+					},
+					NetworkEpoch{
+						M:           8,
+						N:           10,
+						SignStart:   t1,
+						SignEnd:     t2,
+						ValidateEnd: t3,
+					},
+				},
+			},
+			ErrSignEpochWrongBoundaries,
+		},
+	}
+	for _, testCase := range testCases {
+		err := testCase.net.Validate()
+		if err != testCase.errorCode {
+			if err != testCase.errorCode {
+				t.Fatalf("Validate(%#v) should have error code: %v (has %v)",
+					testCase.net, testCase.errorCode, err)
+			}
+		}
+	}
+}
