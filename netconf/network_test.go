@@ -23,14 +23,14 @@ func TestNetworkValidate(t *testing.T) {
 		{
 			Network{
 				[]NetworkEpoch{
-					NetworkEpoch{
+					{
 						M:           8,
 						N:           10,
 						SignStart:   t1,
 						SignEnd:     t2,
 						ValidateEnd: t3,
 					},
-					NetworkEpoch{
+					{
 						M:           8,
 						N:           10,
 						SignStart:   t1,
@@ -44,14 +44,14 @@ func TestNetworkValidate(t *testing.T) {
 		{
 			Network{
 				[]NetworkEpoch{
-					NetworkEpoch{
+					{
 						M:           8,
 						N:           10,
 						SignStart:   t1,
 						SignEnd:     t2,
 						ValidateEnd: t4,
 					},
-					NetworkEpoch{
+					{
 						M:           8,
 						N:           10,
 						SignStart:   t2,
