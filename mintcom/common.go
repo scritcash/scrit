@@ -4,7 +4,7 @@ import (
 	"crypto"
 	"crypto/hmac"
 	"crypto/rand"
-	_ "crypto/sha256" // USed hashing algorithm.
+	_ "crypto/sha256" // used hashing algorithm
 	"errors"
 	"time"
 )
