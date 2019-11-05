@@ -11,7 +11,7 @@ import (
 
 // Errors
 var (
-	ErrShortRead = errors.New("mitcom: Short read from reader")
+	ErrShortRead = errors.New("mitcom: short read from reader")
 )
 
 // Package markers
