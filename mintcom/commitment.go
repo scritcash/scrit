@@ -3,10 +3,9 @@ package mintcom
 // %%TODO%%: Always include proof in commitment.
 
 import (
+	"crypto/ed25519"
 	"crypto/hmac"
 	"encoding/binary"
-
-	"golang.org/x/crypto/ed25519"
 )
 
 // RandomSize is the number of random bytes in a commitment.
