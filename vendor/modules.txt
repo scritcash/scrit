@@ -1,6 +1,6 @@
 # github.com/fatih/color v1.7.0
 github.com/fatih/color
-# github.com/frankbraun/codechain v0.0.0-20191105220919-a355a5a12065
+# github.com/frankbraun/codechain v0.0.0-20191105223719-efa02b4afda7
 github.com/frankbraun/codechain/archive
 github.com/frankbraun/codechain/hashchain
 github.com/frankbraun/codechain/hashchain/internal/state

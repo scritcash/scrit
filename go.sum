@@ -3,8 +3,8 @@ github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/fatih/color v1.7.0 h1:DkWD4oS2D8LGGgTQ6IvwJJXSL5Vp2ffcQg58nFV38Ys=
 github.com/fatih/color v1.7.0/go.mod h1:Zm6kSWBoL9eyXnKyktHP6abPY2pDugNf5KwzbycvMj4=
-github.com/frankbraun/codechain v0.0.0-20191105220919-a355a5a12065 h1:QP/ykPmfQfD/qSgTLuI9NYi14CdaHcZFnxFSq/hI+84=
-github.com/frankbraun/codechain v0.0.0-20191105220919-a355a5a12065/go.mod h1:97C3A5vJWulfCt9ke09lWKaom/qmwtA1lH0OTgT/2x4=
+github.com/frankbraun/codechain v0.0.0-20191105223719-efa02b4afda7 h1:TgGBZi+dPzQ8csBUWCmXkGFkQ8aTbDhAuPweE1SREaQ=
+github.com/frankbraun/codechain v0.0.0-20191105223719-efa02b4afda7/go.mod h1:97C3A5vJWulfCt9ke09lWKaom/qmwtA1lH0OTgT/2x4=
 github.com/frankbraun/go-diff v1.0.0 h1:fpsCLCuZ5AdAUy/HlFvnlYcLSR6N083v+qQQe5oUDzU=
 github.com/frankbraun/go-diff v1.0.0/go.mod h1:Wrp+O0MYpykg99dB2rA1oVnZk8/DdkLis2QWAWR6QfU=
 github.com/mattn/go-colorable v0.1.4 h1:snbPLB8fVfU9iwbbo30TPtbLRzwWu6aJS6Xh4eaaviA=
