@@ -14,11 +14,9 @@ uninstall:
 	rm -f $(bindir)/scrit-engine $(bindir)/scrit-gov $(bindir)/scrit-mint $(bindir)/scrit-wallet
 
 test:
-	go get github.com/frankbraun/gocheck
-	#gocheck -g -c -v cmd netconf
-	go test -p 1 ./mintcom
-	gocheck -g -c -v cmd 
-
+	# go get github.com/frankbraun/gocheck
+	# gocheck -g -c -v
+	gocheck -c -v
 
 fmt:
 	pandoc --standalone -o tmp.md -s README.md
