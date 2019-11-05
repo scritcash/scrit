@@ -1,0 +1,41 @@
+type Peer interface {
+	ID() peerpublickey, mintid // Returns the peers identity properties
+	Send(message) // Message is sent fire&forget
+	Active(duration) bool // Sends a ping to the other side and returns true if any message was received during duration
+	ReceiveCallback(func(mintid, peerpublickey, msg)) // Register a callback function to call when a message has been received
+}
+
+type SpendbookCache interface {
+	Get( Hash(Hash(Input)) ) []Commitments  // Return known commitments for the H(H(I))
+	Add( Hash(Hash(Input)), Commitment)     // Add a commitment
+	Remove( Commitment )                    // Remove a commitment (if it didn't verify)
+}
+
+type Spendbook interface {
+	AddIfUnknown(Hash(Input),Commitment) bool // Add commitment if not committed yet. Return false if couldnt write.
+	Get(Hash(Input)) Commitment               // Get commitment from spendbook if there is one.
+}
+
+
+Commitment {
+  MintID
+  CreateTime  // Unixtime of creation
+  Random   // 16 bytes random
+  HHI  // Hash(Hash(Input))
+  HO  // Hash(Output)
+  HP  // Hash(Proof)
+  HK  // HMAC(IdentityKey, HI)
+  Signature
+}
+
+Commitment.Verify(HI || Nil, PublicKey) bool
+Commitment.Create(Input, Output, PrivateKey) Commitment, error
+
+
+
+GetKey(MintID) publickey
+VerifyCommitment(Hash(Input),Commitment) bool
+VerifyCommitmentSig(Commitment) bool
+ReceiveMessage()
+ReceiveCommitment()
+ReceiveNotKnown()

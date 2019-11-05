@@ -1,0 +1,90 @@
+scrit-mintcom is the inter-mint communication protocol for scrit mints.
+
+It serves the single purpose to prevent honest mints to sign output DBCs against all other mints' decision. 
+
+The fundamental rule is:
+  - Only sign when not opposed to the decision of all other mints.
+
+From this follows:
+  - Do not sign if you don't know what the decision is if there is one.
+  - Do not change your decision after it has been made.
+
+From this does not follow:
+  - All signatures are actually following quorum (only that either all honest mints sign the same or not sign at all.)
+  - All DBC transactions will be successful (attempts to defraud and communication error between mints can prevent signatures.)
+
+For this to hold a mint has to reach at least M other mints that made the same decision or no decision yet.
+
+A mint by itself can be in three states:
+  - Uncommitted: It has not made any commitment to which inputDBC:outputDBC pairing to sign, if any.
+  - Committed: It has made a commitment to which inputDBC:outputDBC pairing to sign, if any.
+  - Signed: The mint has signed the output DBCs.
+
+The mint in relation to the federation can be in three states:
+  - It knows the decision IF there is one.
+  - It knows that there is no decision.
+  - It doesn't know either.
+
+To commit to a signing, the mint must follow these rules:
+  - Making a commitment is unchangeable. A mint may not change his mind.
+  - If the mint knows any commitment that diverges from his own he may not commit.
+
+The mint may only sign if either:
+  - There are no previous commitments.
+  - No previous commitment diverges from his own.
+
+To prevent dishonest mints to poison the decision (and make transactions impossible) proof of knowledge of inputs is required.
+To prevent the impact on mints on split decisions, all commitments by any mint are part of any mints response.
+Proofs for the transaction may be included and can be checked to qualify diverging votes. (Proofs are signatures over Hash(Input)||Hash(Output) and the mint's own signature over Hash(Input))
+
+From this follow these properties:
+  - If M honest mints can reach each other they will sign the same output DBCs or none at all.
+  - Dishonest mints cannot make M (M>n/2) honest mints to split in their decision.
+
+Each mint has two persistent storage sources that serve in this protocol and are key:value systems:
+
+  - Commitment cache: This stores all commitment messages from other mints if the transaction is not known to the mint itself.
+    Key is: Hash(Hash(Input)). Value is a list of all commitments received/known.
+  - Spendbook: Contains the commitment the mint itself has made.
+    Key is: Hash(Input), Value is: Nonce||Hash(Output)||Proof||Sig (see below)
+
+Protocol, transaction receiver:
+  0. Mint is uncommitted.
+  1. Mint receives Input:Output:Proof tuple. (This is at the stage where the transaction itself has been verified)
+  2. Mint checks spendbook if any commitment has been made already. If it diverges in HI or HO, the transaction is denied.
+  3. Mint checks the commitment cache if it contains any diverging commitment concerning Input. If yes, the mint denies the transaction. This 
+     can include checking proofs if diverging commitments exist (if proof cannot be verified then the entry is ignored).
+  4. Mint commits itself to Input:Output:Proof tuple and writes it into spendbook and commitment cache. Mint is committed.
+  5. Mint broadcasts the commitment.
+  6. If the mint receives any diverging commitment concerning Input, it denies the transaction.
+  7. If not hearing from M mints at all, the mint denies the transaction.
+  8. After hearing from M mints without diverging commitment, the mint signs the transaction.
+
+Protocol, no-transaction receiver:
+  0. Mint is uncommitted.
+  1. Mint receives a commitment from another mint.
+  2. Mint checks for own commitment. If mint is committed, it verifies the HK and if it fails, ignores the message and aborts.
+  3. If mint is not committed, return NOTFOUND.
+  4. Mint checks commitments from commitment cache.
+  5. Mint returns all found commitments.
+
+Commitment messages:
+  Each mint has to sign his commitment messages but also show that he knows the Input:Output in question. 
+  1. Sending mint (SM) calculates: HI:=Hash(Input), HO:=Hash(Output), HP:=Hash(Proof), HK:=HMAC(IdentityKey,HI)
+  2. SM generates: Nonce:=UnixTime()||Random
+  3. SM creates package: Pkg:=Nonce||MintID||Hash(HI)||HO||HP||HK
+  4. SM signs package with his identity key:  Sig:=Sign(Pkg)
+  5. SM sends message to all mints:  Pkg||Sig
+  6. Receiving mint (RM) looks up SM's public key from MintID in package.
+  7. RM verifies that Sig is a valid signature over Pkg.
+  8. If RM is himself committed, look up HI and verify HK. If not verified, ignore message.
+
+NOTFOUND reply:
+  1. Mint signs with his identity key:  Sig:=Sign(Nonce||MintID||Hash(HI)||NOTFOUND)
+  2. Mint sends to requesting mint:  Nonce||MintID||Hash(HI)||NOTFOUND||Sig
+  3. Receiving mint looks up public key and verifies signature. On failure, ignore.
+  4. Receiving mint checks if nonce matches. If no, ignore.
+  5. Count as received to request.
+
+
+
