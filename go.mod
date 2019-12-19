@@ -2,4 +2,4 @@ module github.com/scritcash/scrit
 
 go 1.13
 
-require github.com/frankbraun/codechain v0.0.0-20191105223719-efa02b4afda7
+require github.com/frankbraun/codechain v0.0.0-20191218191456-6ac37deb05ba
