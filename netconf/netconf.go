@@ -2,4 +2,4 @@
 package netconf
 
 // DefNetConfFile defines the default network configuration filename.
-const DefNetConfFile = "network.conf"
+const DefNetConfFile = "network.json"

@@ -11,7 +11,7 @@ type Network struct {
 }
 
 // Load a network configuration from filename and return the Network struct.
-func Load(filename string) (*Network, error) {
+func LoadNetwork(filename string) (*Network, error) {
 	data, err := ioutil.ReadFile(filename)
 	if err != nil {
 		return nil, err

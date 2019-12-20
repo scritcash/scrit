@@ -5,8 +5,8 @@ import (
 	"testing"
 )
 
-func TestLoad(t *testing.T) {
-	net, err := Load(filepath.Join("testdata", DefNetConfFile))
+func TestLoadNetwork(t *testing.T) {
+	net, err := LoadNetwork(filepath.Join("testdata", DefNetConfFile))
 	if err != nil {
 		t.Fatal(err)
 	}
