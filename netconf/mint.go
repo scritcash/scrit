@@ -33,7 +33,8 @@ type SigningKey struct {
 	IdentitySignature []byte // signature by identity key
 }
 
-// Load a mint configuration from filename and return the Mint struct.
+// LoadMint loads  a mint configuration from filename and return the
+// Mint struct.
 func LoadMint(filename string) (*Mint, error) {
 	data, err := ioutil.ReadFile(filename)
 	if err != nil {

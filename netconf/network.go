@@ -10,7 +10,8 @@ type Network struct {
 	NetworkEpochs []NetworkEpoch // global list of signing epochs
 }
 
-// Load a network configuration from filename and return the Network struct.
+// LoadNetworks loads a network configuration from filename and return
+// the Network struct.
 func LoadNetwork(filename string) (*Network, error) {
 	data, err := ioutil.ReadFile(filename)
 	if err != nil {
