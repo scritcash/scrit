@@ -13,7 +13,7 @@ func main() {
 	if err := secpkg.UpToDate("scrit"); err != nil {
 		util.Fatal(err)
 	}
-	net, err := netconf.Load(netconf.DefNetConfFile)
+	net, err := netconf.LoadNetwork(netconf.DefNetConfFile)
 	if err != nil {
 		util.Fatal(err)
 	}
