@@ -11,12 +11,12 @@ type Mint struct {
 	Description     string      // description of mint (name)
 	MintIdentityKey IdentityKey // identity key of mint
 	MintEpochs      []MintEpoch // corresponding to global epochs
+	URLs            []string    // how to reach the mint
 }
 
 // MintEpoch defines the key list of a single mint for a single epoch and
 // where to reach the mint.
 type MintEpoch struct {
-	URLs        []string     // how to reach the mint
 	SignStart   time.Time    // start of signing epoch
 	SignEnd     time.Time    // end of signing epoch
 	ValidateEnd time.Time    // end of validation epoch
