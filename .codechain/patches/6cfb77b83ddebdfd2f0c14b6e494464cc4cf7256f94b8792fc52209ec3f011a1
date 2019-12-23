@@ -1,0 +1,118 @@
+codechain patchfile version 2
+treehash 6cfb77b83ddebdfd2f0c14b6e494464cc4cf7256f94b8792fc52209ec3f011a1
++ f 2709eb7b83939a52c5a7c7a5d92fc6b83be0d34a690ceef42890a4b0c01d6971 .secpkg
+utf8file 6
+{
+  "Name": "scrit",
+  "Head": "5b13602a88fd3723122e4b9f00b89b9cc491286a9373877f5e718c63f320ce00",
+  "DNS": "scrit.secpkg.net"
+}
+
+- f 1e793f923f9fe3f3320edbb3291da8ad828bf87f5abd7798a7c404b3a69983ed cmd/scrit-gov/scrit-gov.go
++ f 2dea14c9f61973b50fc0a7cc0994f6d3faecdb2cbec49f55b3b0232fd53048bc cmd/scrit-gov/scrit-gov.go
+dmppatch 5
+@@ -288,58 +288,65 @@
+ %0A%09%7D%0A
+-%09net, err := netconf.Load(netconf.DefNetConfFile)%0A
++%09net, err := netconf.LoadNetwork(netconf.DefNetConfFile)%0A
+ %09if 
+- f 0ed9ed249654bcbb14f8100b39aa4b8319eb3970c6dddd52a87c6b3c7432e536 netconf/mint.go
++ f 92cf76c56332ae628def961625c8c88bcf4ed664dcaf4344184926fa7b5ccad2 netconf/mint.go
+dmppatch 16
+@@ -19,16 +19,46 @@
+ mport (%0A
++%09%22encoding/json%22%0A%09%22io/ioutil%22%0A
+ %09%22time%22%0A
+@@ -145,62 +145,237 @@
+ t %7B%0A
+-%09Epochs %5B%5DMintEpoch // corresponding to global epochs%0A
++%09Description     string      // description of mint (name)%0A%09MintIdentityKey IdentityKey // identity key of mint%0A%09MintEpochs      %5B%5DMintEpoch // corresponding to global epochs%0A%09URLs            %5B%5Dstring    // how to reach the mint%0A
+ %7D%0A%0A/
+@@ -503,58 +503,8 @@
+ t %7B%0A
+-%09URLs        %5B%5Dstring     // how to each the mint%0A
+ %09Sig
+@@ -1074,8 +1074,427 @@
+ y key%0A%7D%0A
++%0A// LoadMint loads  a mint configuration from filename and return the%0A// Mint struct.%0Afunc LoadMint(filename string) (*Mint, error) %7B%0A%09data, err := ioutil.ReadFile(filename)%0A%09if err != nil %7B%0A%09%09return nil, err%0A%09%7D%0A%09var mint Mint%0A%09if err := json.Unmarshal(data, &mint); err != nil %7B%0A%09%09return nil, err%0A%09%7D%0A%09return &mint, err%0A%7D%0A%0A// Validate the mint configuration.%0Afunc (mint *Mint) Validate() error %7B%0A%09// TODO%0A%09return nil%0A%7D%0A
++ f e77585b52f2b21a86b926e59fd50d4d652fb01a7becaffee804f60370f8160b1 netconf/mint_test.go
+utf8file 19
+package netconf
+
+/*
+import (
+	"path/filepath"
+	"testing"
+)
+
+func TestLoadMint(t *testing.T) {
+	mint, err := LoadMint(filepath.Join("testdata", "testmint.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := mint.Validate(); err != nil {
+		t.Fatal(err)
+	}
+}
+*/
+
+- f 8c2c7685759262d5a213c6a146e5c3337de47dd386832717d47b18ca25bf29d7 netconf/netconf.go
++ f 83759ac947ce81f725bcebcfd782bc932d072e85b781e26a7d12c3f5ad605c1d netconf/netconf.go
+dmppatch 4
+@@ -147,42 +147,42 @@
+ me.%0A
+-const DefNetConfFile = %22network.conf%22%0A
++const DefNetConfFile = %22network.json%22%0A
+- f 2b7e694b978657a9df88530345efc564eef73073fc4de085a87fc6b0e6e71994 netconf/network.go
++ f f08d18ea1d45c51bfc550d5e8e99edd015b8dc260cc46d0fb60e85c96fac1b40 netconf/network.go
+dmppatch 5
+@@ -180,132 +180,155 @@
+ %0A%7D%0A%0A
+-// Load a network configuration from filename and return the Network struct.%0Afunc Load(filename string) (*Network, error) %7B%0A
++// LoadNetwork loads a network configuration from filename and return%0A// the Network struct.%0Afunc LoadNetwork(filename string) (*Network, error) %7B%0A
+ %09dat
+- f e327a927c2666484edc64e03d0c39582d93afb4d004f56f0a9688a73c770b6cb netconf/network_test.go
++ f b393f0d39650c5e965038ab6bb0cd7ddbed2aa7a49e2254792ac07b9bbc278a3 netconf/network_test.go
+dmppatch 5
+@@ -54,99 +54,113 @@
+ %0A)%0A%0A
+-func TestLoad(t *testing.T) %7B%0A%09net, err := Load(filepath.Join(%22testdata%22, DefNetConfFile))%0A
++func TestLoadNetwork(t *testing.T) %7B%0A%09net, err := LoadNetwork(filepath.Join(%22testdata%22, DefNetConfFile))%0A
+ %09if 
+- f db1179a57b0e25616d64b62b2a9a3267fb63e3718fecb44d6e0d69d2296ec798 netconf/testdata/network.conf
++ f db1179a57b0e25616d64b62b2a9a3267fb63e3718fecb44d6e0d69d2296ec798 netconf/testdata/network.json
+utf8file 33
+{
+  "NetworkEpochs": [
+    {
+      "M": 8,
+      "N": 10,
+      "SignStart": "2006-01-02T15:04:05Z",
+      "SignEnd": "2006-02-02T15:04:05Z",
+      "ValidateEnd": "2006-03-02T15:04:05Z",
+      "MintsAdded": null,
+      "MintsRemoved": null,
+      "MintsReplaced": null,
+      "DBCTypesAdded": null,
+      "DBCTypesRemoved": null,
+      "MonetarySupplyIncrease": null,
+      "MonetarySupplyReduction": null
+    },
+    {
+      "M": 8,
+      "N": 10,
+      "SignStart": "2006-02-02T15:04:05Z",
+      "SignEnd": "2006-03-02T15:04:05Z",
+      "ValidateEnd": "2006-04-02T15:04:05Z",
+      "MintsAdded": null,
+      "MintsRemoved": null,
+      "MintsReplaced": null,
+      "DBCTypesAdded": null,
+      "DBCTypesRemoved": null,
+      "MonetarySupplyIncrease": null,
+      "MonetarySupplyReduction": null
+    }
+  ]
+}
+
+treehash f503d574abd134279921e73c59b8266a06980f5ca55b7919e9dbb3f7f183b04c
