@@ -23,16 +23,6 @@ type MintEpoch struct {
 	KeyList     []SigningKey // the key list
 }
 
-// SigningKey defines an entry in the key list.
-type SigningKey struct {
-	Currency          string // the currency this key signs, usually ISO 4217 codes
-	Amount            uint64 // the amount this key signs, 8 digits after the dot
-	SigAlgo           string // signature algorithm
-	PubKey            []byte // public key
-	SelfSignature     []byte // self signature
-	IdentitySignature []byte // signature by identity key
-}
-
 // LoadMint loads  a mint configuration from filename and return the
 // Mint struct.
 func LoadMint(filename string) (*Mint, error) {
