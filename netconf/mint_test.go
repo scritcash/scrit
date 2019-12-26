@@ -1,13 +1,13 @@
 package netconf
 
-/*
 import (
 	"path/filepath"
 	"testing"
 )
 
 func TestLoadMint(t *testing.T) {
-	mint, err := LoadMint(filepath.Join("testdata", "testmint.json"))
+	mint, err := LoadMint(filepath.Join("testdata",
+		marshalledIdentityKey+".json"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -15,4 +15,3 @@ func TestLoadMint(t *testing.T) {
 		t.Fatal(err)
 	}
 }
-*/
