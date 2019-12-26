@@ -6,7 +6,8 @@ import (
 	"time"
 )
 
-// Mint defines the key list of a single mint for all epochs.
+// Mint defines the key list of a single mint for all epochs and where to
+// reach the mint.
 type Mint struct {
 	Description     string      // description of mint (name)
 	MintIdentityKey IdentityKey // identity key of mint
@@ -14,8 +15,7 @@ type Mint struct {
 	URLs            []string    // how to reach the mint
 }
 
-// MintEpoch defines the key list of a single mint for a single epoch and
-// where to reach the mint.
+// MintEpoch defines the key list of a single mint for a single epoch.
 type MintEpoch struct {
 	SignStart   time.Time    // start of signing epoch
 	SignEnd     time.Time    // end of signing epoch
