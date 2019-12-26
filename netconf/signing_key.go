@@ -16,6 +16,7 @@ type SigningKey struct {
 	privKey           ed25519.PrivateKey // private key
 }
 
+// NewSigningKey generates a new signing key.
 func NewSigningKey(
 	currency string,
 	amount uint64,

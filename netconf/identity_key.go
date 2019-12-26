@@ -13,6 +13,7 @@ type IdentityKey struct {
 	privKey ed25519.PrivateKey // private key
 }
 
+// NewIdentityKey generates a new identity key.
 func NewIdentityKey() (*IdentityKey, error) {
 	var ik IdentityKey
 	ik.SigAlgo = "ed25519" // TODO
@@ -25,6 +26,7 @@ func NewIdentityKey() (*IdentityKey, error) {
 	return &ik, err
 }
 
+// Marshal identity key.
 func (ik *IdentityKey) Marshal() string {
 	return ik.SigAlgo + "-" + base64.RawURLEncoding.EncodeToString(ik.PubKey)
 }
