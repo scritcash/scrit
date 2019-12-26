@@ -21,12 +21,6 @@ type NetworkEpoch struct {
 	MonetarySupplyReduction []Note           // TODO: define burn process
 }
 
-// IdentityKey defines a mint identity key.
-type IdentityKey struct {
-	SigAlgo string // signature algorithm
-	PubKey  []byte // public key
-}
-
 // KeyReplacement defines a mint identity key replacement.
 type KeyReplacement struct {
 	NewKey    IdentityKey // the new identity key
