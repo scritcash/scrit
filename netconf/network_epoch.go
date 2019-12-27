@@ -7,18 +7,16 @@ import (
 // NetworkEpoch globally defines a verification epoch (signing plus validation
 // epoch) on the network.
 type NetworkEpoch struct {
-	M                       uint64           // the quorum
-	N                       uint64           // total number of mints
-	SignStart               time.Time        // start of signing epoch
-	SignEnd                 time.Time        // end of signing epoch
-	ValidateEnd             time.Time        // end of validation epoch
-	MintsAdded              []IdentityKey    // mints added in this epoch
-	MintsRemoved            []IdentityKey    // mints removed in this epoch
-	MintsReplaced           []KeyReplacement // mints replaced in this epoch
-	DBCTypesAdded           []DBCType        // DBC types added in this epoch
-	DBCTypesRemoved         []DBCType        // DBC types removed in this epoch
-	MonetarySupplyIncrease  []Note           // new notes to print
-	MonetarySupplyReduction []Note           // TODO: define burn process
+	M               uint64           // the quorum
+	N               uint64           // total number of mints
+	SignStart       time.Time        // start of signing epoch
+	SignEnd         time.Time        // end of signing epoch
+	ValidateEnd     time.Time        // end of validation epoch
+	MintsAdded      []IdentityKey    // mints added in this epoch
+	MintsRemoved    []IdentityKey    // mints removed in this epoch
+	MintsReplaced   []KeyReplacement // mints replaced in this epoch
+	DBCTypesAdded   []DBCType        // DBC types added in this epoch
+	DBCTypesRemoved []DBCType        // DBC types removed in this epoch
 }
 
 // KeyReplacement defines a mint identity key replacement.
@@ -32,15 +30,6 @@ type KeyReplacement struct {
 type DBCType struct {
 	Currency string // the DBC currency
 	Amount   uint64 // per DBC
-}
-
-// Note defines newly printed or burned DBCs.
-type Note struct {
-	Random         [16]byte // nonce
-	Quantity       uint64   // number of DBCs
-	Currency       string   // DBC currency
-	Amount         uint64   // per DBC
-	ReceiverPubKey []byte   // recipient
 }
 
 // Validate the network epoch.

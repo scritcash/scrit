@@ -7,7 +7,7 @@ import (
 
 func TestLoadMint(t *testing.T) {
 	mint, err := LoadMint(filepath.Join("testdata",
-		marshalledIdentityKey+".json"))
+		DefMintDir, marshalledIdentityKey+".json"))
 	if err != nil {
 		t.Fatal(err)
 	}

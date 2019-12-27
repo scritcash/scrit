@@ -10,9 +10,7 @@
       "MintsRemoved": null,
       "MintsReplaced": null,
       "DBCTypesAdded": null,
-      "DBCTypesRemoved": null,
-      "MonetarySupplyIncrease": null,
-      "MonetarySupplyReduction": null
+      "DBCTypesRemoved": null
     },
     {
       "M": 8,
@@ -24,9 +22,7 @@
       "MintsRemoved": null,
       "MintsReplaced": null,
       "DBCTypesAdded": null,
-      "DBCTypesRemoved": null,
-      "MonetarySupplyIncrease": null,
-      "MonetarySupplyReduction": null
+      "DBCTypesRemoved": null
     }
   ]
 }
