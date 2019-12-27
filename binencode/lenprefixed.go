@@ -15,6 +15,7 @@ import (
 // Encode/Decode check capacity of slices for ability
 // - []byte (min,max)
 
+// Encode16Size defines the size of an int16 encoding.
 const Encode16Size = 3
 
 // EncodeInt16 encodes an int16 into b. It returns b, advanced by the data written, as well as the length of data written.
@@ -43,6 +44,7 @@ func DecodeInt16(b []byte, i *int16) (output []byte, n int, err error) {
 	return b[Encode16Size:], Encode16Size, nil
 }
 
+// Encode32Size defines the size of an int32 encoding.
 const Encode32Size = 5
 
 // EncodeInt32 encodes an int32 into b. It returns b, advanced by the data written, as well as the length of data written.
@@ -71,6 +73,7 @@ func DecodeInt32(b []byte, i *int32) (output []byte, n int, err error) {
 	return b[Encode32Size:], Encode32Size, nil
 }
 
+// Encode64Size defines the size of an int64 encoding.
 const Encode64Size = 9
 
 // EncodeInt64 encodes an int64 into out. It returns out, advanced by the data written, as well as the length of data written.
