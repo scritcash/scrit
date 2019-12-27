@@ -9,11 +9,8 @@ func TestSigningKey(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	sk, err := NewSigningKey("EUR", 100000000, ik)
+	_, err = NewSigningKey("EUR", 100000000, ik)
 	if err != nil {
-		t.Error(err)
-	}
-	if err := sk.Verify(ik); err != nil {
 		t.Error(err)
 	}
 }

@@ -17,10 +17,11 @@ type Mint struct {
 
 // MintEpoch defines the key list of a single mint for a single epoch.
 type MintEpoch struct {
-	SignStart   time.Time    // start of signing epoch
-	SignEnd     time.Time    // end of signing epoch
-	ValidateEnd time.Time    // end of validation epoch
-	KeyList     []SigningKey // the key list
+	SignStart         time.Time    // start of signing epoch
+	SignEnd           time.Time    // end of signing epoch
+	ValidateEnd       time.Time    // end of validation epoch
+	KeyList           []SigningKey // the key list
+	KeyListSignatures [][]byte     // signatures of key list (identity signature last)
 }
 
 // LoadMint loads  a mint configuration from filename and return the
