@@ -4,7 +4,6 @@ package binencode
 
 import (
 	"encoding/binary"
-	"errors"
 	"reflect"
 )
 
@@ -15,16 +14,6 @@ import (
 // Encode/Decode move pointers into input/output slices further
 // Encode/Decode check capacity of slices for ability
 // - []byte (min,max)
-
-var (
-	ErrOutputSize        = errors.New("types: Output buffer capacity too small")
-	ErrInputSize         = errors.New("types: Input buffer length too small")
-	ErrSlizeSize         = errors.New("types: Output slize too small")
-	ErrSlizeExpected     = errors.New("types: Slice has unexpected length")
-	ErrSlizeExpectedLong = errors.New("types: Slice has unexpected long length")
-	ErrType              = errors.New("types: Unexpected type encountered")
-	ErrNil               = errors.New("types: Cannot write type to nil value")
-)
 
 const Encode16Size = 3
 
