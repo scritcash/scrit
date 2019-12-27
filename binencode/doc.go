@@ -38,13 +38,13 @@ runtime.
   encodingScheme := []interface{}{v.a, v.b, v.c, v.d}
 
   // Calculate size of encoded message for manual allocation.
-  size := EncodeSize(encodingScheme)
+  size, _ := EncodeSize(encodingScheme...)
 
   // Serialize data into message using preallocated buffer and the defined
   // scheme.
   encodedData, _ := Encode(buf, encodingScheme...)
 
   // Decode message into the pre-allocated variable decribed by encodingScheme.
-  _,_ := Decode(encodedData, encodingScheme)
+  _, _ := Decode(encodedData, encodingScheme)
 */
 package binencode
