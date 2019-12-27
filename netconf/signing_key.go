@@ -3,6 +3,7 @@ package netconf
 import (
 	"crypto/ed25519"
 	"crypto/rand"
+	"errors"
 )
 
 // SigningKey defines an entry in the key list.
@@ -30,8 +31,22 @@ func NewSigningKey(
 	if err != nil {
 		return nil, err
 	}
-
-	// TODO
-
+	sk.PubKey = pubKey
+	sk.SelfSignature = ed25519.Sign(privKey, pubKey)
+	sk.IdentitySignature = ed25519.Sign(ik.privKey, pubKey)
+	sk.privKey = privKey
 	return &sk, nil
+}
+
+// Verify that the signing key is signed correctly.
+func (sk *SigningKey) Verify(ik *IdentityKey) error {
+	// verify self signature
+	if !ed25519.Verify(sk.PubKey, sk.PubKey, sk.SelfSignature) {
+		return errors.New("netconf: self signature does not verify")
+	}
+	// verify identity key signature
+	if !ed25519.Verify(ik.PubKey, sk.PubKey, sk.IdentitySignature) {
+		return errors.New("netconf: identity key signature does not verify")
+	}
+	return nil
 }
