@@ -183,10 +183,10 @@ func DecodeBytes(in []byte, out *[]byte) (output []byte, n int, err error) {
 	x = *out
 	if size > 0 {
 		if cap(x) < size {
-			return in, 0, ErrSlizeExpectedLong
+			return in, 0, ErrSliceExpectedLong
 		}
 		if len(x) > 0 && len(x) != size {
-			return in, 0, ErrSlizeExpected
+			return in, 0, ErrSliceExpected
 		}
 		x = x[0:size]
 		copy(x, in[5:5+size])

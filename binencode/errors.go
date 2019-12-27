@@ -10,14 +10,14 @@ var ErrOutputSize = errors.New("binencode: output buffer capacity too small")
 // ErrInputSize is returned if the input buffer length is too small.
 var ErrInputSize = errors.New("binencode: input buffer length too small")
 
-// ErrSlizeSize is returned if the output slize is too small.
-var ErrSlizeSize = errors.New("binencode: output slize too small")
+// ErrSliceSize is returned if the output slice is too small.
+var ErrSliceSize = errors.New("binencode: output slice too small")
 
-// ErrSlizeExpected is returned if the slice has an unexpected length.
-var ErrSlizeExpected = errors.New("binencode: slice has unexpected length")
+// ErrSliceExpected is returned if the slice has an unexpected length.
+var ErrSliceExpected = errors.New("binencode: slice has unexpected length")
 
-// ErrSlizeExpectedLong is returned if the slice has an unexpected long length.
-var ErrSlizeExpectedLong = errors.New("binencode: slice has unexpected long length")
+// ErrSliceExpectedLong is returned if the slice has an unexpected long length.
+var ErrSliceExpectedLong = errors.New("binencode: slice has unexpected long length")
 
 // ErrType is returned if an unexpected type is encountered.
 var ErrType = errors.New("binencode: unexpected type encountered")
