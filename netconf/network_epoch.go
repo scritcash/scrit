@@ -7,8 +7,8 @@ import (
 // NetworkEpoch globally defines a verification epoch (signing plus validation
 // epoch) on the network.
 type NetworkEpoch struct {
-	M               uint64           // the quorum
-	N               uint64           // total number of mints
+	QuorumM         uint64           // the quorum
+	NumberOfMintsN  uint64           // total number of mints
 	SignStart       time.Time        // start of signing epoch
 	SignEnd         time.Time        // end of signing epoch
 	ValidateEnd     time.Time        // end of validation epoch
@@ -35,19 +35,19 @@ type DBCType struct {
 // Validate the network epoch.
 func (epoch *NetworkEpoch) Validate() error {
 	// m > 0
-	if epoch.M == 0 {
+	if epoch.QuorumM == 0 {
 		return ErrZeroM
 	}
 	// n > 0
-	if epoch.N == 0 {
+	if epoch.NumberOfMintsN == 0 {
 		return ErrZeroN
 	}
 	// m <= n
-	if epoch.M > epoch.N {
+	if epoch.QuorumM > epoch.NumberOfMintsN {
 		return ErrMGreaterN
 	}
 	// m > n/2
-	if epoch.M <= epoch.N/2 {
+	if epoch.QuorumM <= epoch.NumberOfMintsN/2 {
 		return ErrQuorumTooSmall
 	}
 
