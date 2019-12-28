@@ -2,15 +2,12 @@
 github.com/davecgh/go-spew/spew
 # github.com/fatih/color v1.7.0
 github.com/fatih/color
-# github.com/frankbraun/codechain v0.0.0-20191228013848-5f58d5372173
+# github.com/frankbraun/codechain v1.0.0
 github.com/frankbraun/codechain/archive
 github.com/frankbraun/codechain/command
 github.com/frankbraun/codechain/hashchain
 github.com/frankbraun/codechain/hashchain/internal/state
 github.com/frankbraun/codechain/hashchain/linktype
-github.com/frankbraun/codechain/internal/ascii85
-github.com/frankbraun/codechain/internal/base64
-github.com/frankbraun/codechain/internal/def
 github.com/frankbraun/codechain/keyfile
 github.com/frankbraun/codechain/patchfile
 github.com/frankbraun/codechain/secpkg
@@ -18,7 +15,10 @@ github.com/frankbraun/codechain/ssot
 github.com/frankbraun/codechain/sync
 github.com/frankbraun/codechain/tree
 github.com/frankbraun/codechain/util
+github.com/frankbraun/codechain/util/ascii85
+github.com/frankbraun/codechain/util/base64
 github.com/frankbraun/codechain/util/bzero
+github.com/frankbraun/codechain/util/def
 github.com/frankbraun/codechain/util/file
 github.com/frankbraun/codechain/util/git
 github.com/frankbraun/codechain/util/gnumake
