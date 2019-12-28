@@ -39,13 +39,13 @@ func NewIdentityKeyEd25519Priv(privKey *[64]byte) *IdentityKey {
 	return &ik
 }
 
-// Marshal identity key.
-func (ik *IdentityKey) Marshal() string {
+// MarshalID marshals identity key as ID.
+func (ik *IdentityKey) MarshalID() string {
 	return ik.SigAlgo + "-" + base64.RawURLEncoding.EncodeToString(ik.PubKey)
 }
 
-// MarshalJSON ik as JSON string.
-func (ik *IdentityKey) MarshalJSON() string {
+// Marshal ik as JSON string.
+func (ik *IdentityKey) Marshal() string {
 	jsn, err := json.MarshalIndent(ik, "", "  ")
 	if err != nil {
 		panic(err) // should never happen

@@ -27,8 +27,8 @@ func init() {
 }
 
 func TestIdentityKeyMarshal(t *testing.T) {
-	ik := identityKey.Marshal()
+	ik := identityKey.MarshalID()
 	if ik != marshalledIdentityKey {
-		t.Errorf("identityKey.Marshal() == %s != %s", ik, marshalledIdentityKey)
+		t.Errorf("identityKey.MarshalID() == %s != %s", ik, marshalledIdentityKey)
 	}
 }
