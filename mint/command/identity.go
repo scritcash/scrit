@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 
 	"github.com/frankbraun/codechain/secpkg"
+	"github.com/frankbraun/codechain/util/def"
 	"github.com/frankbraun/codechain/util/log"
 	"github.com/frankbraun/codechain/util/seckey"
 	"github.com/scritcash/scrit/netconf"
@@ -16,7 +17,7 @@ import (
 
 func identity(homeDir, secKey string) error {
 	if secKey == "" {
-		secretDir := filepath.Join(homeDir, "secrets") // TODO: use def.SecretsSubDir
+		secretDir := filepath.Join(homeDir, def.SecretsSubDir)
 		files, err := ioutil.ReadDir(secretDir)
 		if err != nil {
 			return err
