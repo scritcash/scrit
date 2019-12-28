@@ -50,6 +50,7 @@ func LoadMint(filename string) (*Mint, error) {
 	return &mint, err
 }
 
+// Sign mint epoch.
 func (me *MintEpoch) Sign(ik *IdentityKey) error {
 	encodingScheme := []interface{}{
 		[]byte(ik.SigAlgo),
@@ -87,6 +88,7 @@ func (me *MintEpoch) Sign(ik *IdentityKey) error {
 	return nil
 }
 
+// Verify mint epoch.
 func (me *MintEpoch) Verify(ik *IdentityKey) error {
 	// TODO
 	return nil
