@@ -6,8 +6,8 @@ github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/fatih/color v1.7.0 h1:DkWD4oS2D8LGGgTQ6IvwJJXSL5Vp2ffcQg58nFV38Ys=
 github.com/fatih/color v1.7.0/go.mod h1:Zm6kSWBoL9eyXnKyktHP6abPY2pDugNf5KwzbycvMj4=
-github.com/frankbraun/codechain v0.0.0-20191227011205-ccb5f0ef72a4 h1:ibkOmBqKz4XDOeveQnxl+N7aF8kZ5DZPAeNCg2aQIsE=
-github.com/frankbraun/codechain v0.0.0-20191227011205-ccb5f0ef72a4/go.mod h1:Ln0cfiunOptWYjo+v38arJo/8JFa8cADtxATiDAI/qI=
+github.com/frankbraun/codechain v0.0.0-20191228013848-5f58d5372173 h1:qG+Cwwy4UiDuEa++YV/1qumg/rJjaPw1A/9kmYCj5jI=
+github.com/frankbraun/codechain v0.0.0-20191228013848-5f58d5372173/go.mod h1:Ln0cfiunOptWYjo+v38arJo/8JFa8cADtxATiDAI/qI=
 github.com/frankbraun/go-diff v1.0.0 h1:fpsCLCuZ5AdAUy/HlFvnlYcLSR6N083v+qQQe5oUDzU=
 github.com/frankbraun/go-diff v1.0.0/go.mod h1:Wrp+O0MYpykg99dB2rA1oVnZk8/DdkLis2QWAWR6QfU=
 github.com/mattn/go-colorable v0.1.4 h1:snbPLB8fVfU9iwbbo30TPtbLRzwWu6aJS6Xh4eaaviA=

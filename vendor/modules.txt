@@ -2,27 +2,34 @@
 github.com/davecgh/go-spew/spew
 # github.com/fatih/color v1.7.0
 github.com/fatih/color
-# github.com/frankbraun/codechain v0.0.0-20191227011205-ccb5f0ef72a4
+# github.com/frankbraun/codechain v0.0.0-20191228013848-5f58d5372173
 github.com/frankbraun/codechain/archive
+github.com/frankbraun/codechain/command
 github.com/frankbraun/codechain/hashchain
 github.com/frankbraun/codechain/hashchain/internal/state
 github.com/frankbraun/codechain/hashchain/linktype
 github.com/frankbraun/codechain/internal/ascii85
 github.com/frankbraun/codechain/internal/base64
 github.com/frankbraun/codechain/internal/def
+github.com/frankbraun/codechain/keyfile
 github.com/frankbraun/codechain/patchfile
 github.com/frankbraun/codechain/secpkg
 github.com/frankbraun/codechain/ssot
 github.com/frankbraun/codechain/sync
 github.com/frankbraun/codechain/tree
 github.com/frankbraun/codechain/util
+github.com/frankbraun/codechain/util/bzero
 github.com/frankbraun/codechain/util/file
+github.com/frankbraun/codechain/util/git
 github.com/frankbraun/codechain/util/gnumake
 github.com/frankbraun/codechain/util/hex
 github.com/frankbraun/codechain/util/home
 github.com/frankbraun/codechain/util/homedir
+github.com/frankbraun/codechain/util/interrupt
 github.com/frankbraun/codechain/util/lockfile
 github.com/frankbraun/codechain/util/log
+github.com/frankbraun/codechain/util/seckey
+github.com/frankbraun/codechain/util/terminal
 github.com/frankbraun/codechain/util/time
 # github.com/frankbraun/go-diff v1.0.0
 github.com/frankbraun/go-diff/diffmatchpatch
@@ -31,10 +38,14 @@ github.com/mattn/go-colorable
 # github.com/mattn/go-isatty v0.0.11
 github.com/mattn/go-isatty
 # golang.org/x/crypto v0.0.0-20191227163750-53104e6ec876
+golang.org/x/crypto/argon2
+golang.org/x/crypto/blake2b
 golang.org/x/crypto/internal/subtle
 golang.org/x/crypto/nacl/secretbox
 golang.org/x/crypto/poly1305
 golang.org/x/crypto/salsa20/salsa
+golang.org/x/crypto/ssh/terminal
 # golang.org/x/sys v0.0.0-20191224085550-c709ea063b76
 golang.org/x/sys/cpu
 golang.org/x/sys/unix
+golang.org/x/sys/windows
