@@ -22,7 +22,8 @@ func identity(homeDir, secKey string) error {
 			return err
 		}
 		if len(files) > 1 {
-			return fmt.Errorf("directory '%s' contains more than one secret file, use option -s")
+			return fmt.Errorf("directory '%s' contains more than one secret file, use option -s",
+				secretDir)
 		}
 		secKey = filepath.Join(secretDir, files[0].Name())
 	}
