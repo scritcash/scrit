@@ -1,9 +1,13 @@
 package netconf
 
 import (
+	//"crypto/ed25519"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"time"
+
+	"github.com/scritcash/scrit/binencode"
 )
 
 // Mint defines the key list of a single mint for all epochs and where to
@@ -35,7 +39,57 @@ func LoadMint(filename string) (*Mint, error) {
 	if err := json.Unmarshal(data, &mint); err != nil {
 		return nil, err
 	}
+
+	// TODO
+	for _, me := range mint.MintEpochs {
+		if err := me.Sign(&mint.MintIdentityKey); err != nil {
+			return nil, err
+		}
+	}
+
 	return &mint, err
+}
+
+func (me *MintEpoch) Sign(ik *IdentityKey) error {
+	encodingScheme := []interface{}{
+		[]byte(ik.SigAlgo),
+		ik.PubKey,
+		me.SignStart.UTC().Unix(),
+		me.SignEnd.UTC().Unix(),
+		me.ValidateEnd.UTC().Unix(),
+	}
+	for _, k := range me.KeyList {
+		encodingScheme = append(encodingScheme,
+			[]byte(k.Currency),
+			int64(k.Amount),
+			[]byte(k.SigAlgo),
+			k.PubKey,
+		)
+	}
+	size, err := binencode.EncodeSize(encodingScheme...)
+	if err != nil {
+		return err
+	}
+	fmt.Printf("size=%d\n", size)
+	buf := make([]byte, size)
+	_, err = binencode.Encode(buf, encodingScheme...)
+	if err != nil {
+		return err
+	}
+	/*
+		for _, k := range me.KeyList {
+			sig := ed25519.Sign(k.privKey, enc)
+			me.KeyListSignatures = append(me.KeyListSignatures, sig)
+		}
+		sig := ed25519.Sign(ik.privKey, enc)
+		me.KeyListSignatures = append(me.KeyListSignatures, sig)
+	*/
+	return nil
+}
+
+func (me *MintEpoch) Verify(ik *IdentityKey) error {
+	// TODO
+	return nil
 }
 
 // Validate the mint configuration.
