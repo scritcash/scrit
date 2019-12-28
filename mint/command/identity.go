@@ -3,13 +3,38 @@ package command
 import (
 	"flag"
 	"fmt"
+	"io/ioutil"
 	"os"
+	"path/filepath"
 
 	"github.com/frankbraun/codechain/secpkg"
 	"github.com/frankbraun/codechain/util/log"
 	"github.com/frankbraun/codechain/util/seckey"
+	"github.com/scritcash/scrit/netconf"
 	"github.com/scritcash/scrit/util/homedir"
 )
+
+func identity(homeDir, secKey string) error {
+	if secKey == "" {
+		secretDir := filepath.Join(homeDir, "secrets") // TODO: use def.SecretsSubDir
+		files, err := ioutil.ReadDir(secretDir)
+		if err != nil {
+			return err
+		}
+		if len(files) > 1 {
+			return fmt.Errorf("directory '%s' contains more than one secret file, use option -s")
+		}
+		secKey = filepath.Join(secretDir, files[0].Name())
+	}
+	sec, _, comment, err := seckey.Read(secKey)
+	if err != nil {
+		return err
+	}
+	ik := netconf.NewIdentityKeyEd25519Priv(sec)
+	fmt.Println(string(comment))
+	fmt.Println(ik.MarshalJSON())
+	return nil
+}
 
 // Identity implements the scrit-mint 'identity' command.
 func Identity(argv0 string, args ...string) error {
@@ -27,6 +52,7 @@ func Identity(argv0 string, args ...string) error {
 	if *verbose {
 		log.Std = log.NewStd(os.Stdout)
 	}
+	homeDir := homedir.ScritMint()
 	if err := seckey.Check(homedir.ScritMint(), *secKey); err != nil {
 		return err
 	}
@@ -37,5 +63,5 @@ func Identity(argv0 string, args ...string) error {
 		fs.Usage()
 		return flag.ErrHelp
 	}
-	return nil
+	return identity(homeDir, *secKey)
 }
