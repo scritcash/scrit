@@ -1,6 +1,8 @@
+# github.com/davecgh/go-spew v1.1.1
+github.com/davecgh/go-spew/spew
 # github.com/fatih/color v1.7.0
 github.com/fatih/color
-# github.com/frankbraun/codechain v0.0.0-20191225125520-7dbc4e94c594
+# github.com/frankbraun/codechain v0.0.0-20191227011205-ccb5f0ef72a4
 github.com/frankbraun/codechain/archive
 github.com/frankbraun/codechain/hashchain
 github.com/frankbraun/codechain/hashchain/internal/state
@@ -28,7 +30,7 @@ github.com/frankbraun/go-diff/diffmatchpatch
 github.com/mattn/go-colorable
 # github.com/mattn/go-isatty v0.0.11
 github.com/mattn/go-isatty
-# golang.org/x/crypto v0.0.0-20191219195013-becbf705a915
+# golang.org/x/crypto v0.0.0-20191227163750-53104e6ec876
 golang.org/x/crypto/internal/subtle
 golang.org/x/crypto/nacl/secretbox
 golang.org/x/crypto/poly1305
