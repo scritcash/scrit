@@ -13,6 +13,7 @@ func usage() {
 	cmd := os.Args[0]
 	fmt.Fprintf(os.Stderr, "Usage: %s keygen [-s seckey.bin]\n", cmd)
 	fmt.Fprintf(os.Stderr, "       %s keyfile -s seckey.bin [-c]\n", cmd)
+	fmt.Fprintf(os.Stderr, "       %s identity [-s seckey.bin]\n", cmd)
 	os.Exit(2)
 }
 
@@ -28,6 +29,8 @@ func main() {
 		err = command.KeyGen(argv0, args...)
 	case "keyfile":
 		err = command.KeyFile(argv0, args...)
+	case "identity":
+		err = command.Identity(argv0, args...)
 	default:
 		usage()
 	}
