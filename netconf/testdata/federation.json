@@ -1,7 +1,20 @@
 {
   "NetworkEpochs": [
     {
-      "DBCTypesAdded": null,
+      "DBCTypesAdded": [
+        {
+          "Amount": 100000000,
+          "Currency": "EUR"
+        },
+        {
+          "Amount": 200000000,
+          "Currency": "EUR"
+        },
+        {
+          "Amount": 500000000,
+          "Currency": "EUR"
+        }
+      ],
       "DBCTypesRemoved": null,
       "MintsAdded": [
         {
