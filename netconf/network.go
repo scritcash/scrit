@@ -3,11 +3,28 @@ package netconf
 import (
 	"encoding/json"
 	"io/ioutil"
+	"time"
 )
 
 // Network defines a Scrit network.
 type Network struct {
 	NetworkEpochs []NetworkEpoch // global list of signing epochs
+}
+
+// NewNetwork creates a new network configuration and returns the Network
+// struct.
+func NewNetwork(m, n uint64, signStart, signEnd, validateEnd time.Time) *Network {
+	var network Network
+	network.NetworkEpochs = []NetworkEpoch{
+		{
+			QuorumM:        m,
+			NumberOfMintsN: n,
+			SignStart:      signStart,
+			SignEnd:        signEnd,
+			ValidateEnd:    validateEnd,
+		},
+	}
+	return &network
 }
 
 // LoadNetwork loads a network configuration from filename and return
@@ -17,29 +34,29 @@ func LoadNetwork(filename string) (*Network, error) {
 	if err != nil {
 		return nil, err
 	}
-	var net Network
-	if err := json.Unmarshal(data, &net); err != nil {
+	var n Network
+	if err := json.Unmarshal(data, &n); err != nil {
 		return nil, err
 	}
-	return &net, err
+	return &n, err
 }
 
-// Validate the net configuration.
-func (net *Network) Validate() error {
+// Validate the network configuration.
+func (n *Network) Validate() error {
 	// validate each network epoch
-	for _, e := range net.NetworkEpochs {
+	for _, e := range n.NetworkEpochs {
 		if err := e.Validate(); err != nil {
 			return err
 		}
 	}
 	// validate network epoch transitions
-	for i := 1; i < len(net.NetworkEpochs); i++ {
+	for i := 1; i < len(n.NetworkEpochs); i++ {
 		// sign end i-1 == sign start i
-		if net.NetworkEpochs[i-1].SignEnd != net.NetworkEpochs[i].SignStart {
+		if n.NetworkEpochs[i-1].SignEnd != n.NetworkEpochs[i].SignStart {
 			return ErrSignEpochWrongBoundaries
 		}
 		// validation end i-1 <= sign end i
-		if net.NetworkEpochs[i-1].ValidateEnd.After(net.NetworkEpochs[i].SignEnd) {
+		if n.NetworkEpochs[i-1].ValidateEnd.After(n.NetworkEpochs[i].SignEnd) {
 			return ErrValidationLongerThanNextSigning
 		}
 	}
@@ -47,11 +64,21 @@ func (net *Network) Validate() error {
 	return nil
 }
 
-// Marshal net as string.
-func (net *Network) Marshal() string {
-	jsn, err := json.MarshalIndent(net, "", "  ")
+// Marshal network as string.
+func (n *Network) Marshal() string {
+	jsn, err := json.MarshalIndent(n, "", "  ")
 	if err != nil {
 		panic(err) // should never happen
 	}
 	return string(jsn)
+}
+
+// Save network to filename. If filename exists already it will be
+// overwritten!
+func (n *Network) Save(filename string) error {
+	jsn, err := json.MarshalIndent(n, "", "  ")
+	if err != nil {
+		return err
+	}
+	return ioutil.WriteFile(filename, jsn, 0755)
 }

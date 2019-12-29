@@ -11,7 +11,8 @@ import (
 
 func usage() {
 	cmd := os.Args[0]
-	fmt.Fprintf(os.Stderr, "Usage: %s status\n", cmd)
+	fmt.Fprintf(os.Stderr, "Usage: %s start\n", cmd)
+	fmt.Fprintf(os.Stderr, "       %s status\n", cmd)
 	os.Exit(2)
 }
 
@@ -23,6 +24,8 @@ func main() {
 	args := os.Args[2:]
 	var err error
 	switch os.Args[1] {
+	case "start":
+		err = command.Start(argv0, args...)
 	case "status":
 		err = command.Status(argv0, args...)
 	default:
