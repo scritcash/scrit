@@ -18,6 +18,7 @@ func start(
 	filename string,
 	m, n uint64,
 	signStart, signEnd, validationEnd time.Time,
+	mintIdentities []netconf.IdentityKey,
 ) error {
 	exists, err := file.Exists(filename)
 	if err != nil {
@@ -26,7 +27,8 @@ func start(
 	if exists {
 		return fmt.Errorf("file '%s' exists already", filename)
 	}
-	net := netconf.NewNetwork(m, n, signStart, signEnd, validationEnd)
+	net := netconf.NewNetwork(m, n, signStart, signEnd, validationEnd,
+		mintIdentities)
 	if err := net.Validate(); err != nil {
 		return err
 	}
@@ -37,7 +39,7 @@ func start(
 func Start(argv0 string, args ...string) error {
 	fs := flag.NewFlagSet(argv0, flag.ContinueOnError)
 	fs.Usage = func() {
-		fmt.Fprintf(os.Stderr, "Usage: %s]\n", argv0)
+		fmt.Fprintf(os.Stderr, "Usage: %s mint_identity [...]\n", argv0)
 		fmt.Fprintf(os.Stderr, "Start new Scrit %s.\n", netconf.DefNetConfFile)
 		fs.PrintDefaults()
 	}
@@ -57,7 +59,7 @@ func Start(argv0 string, args ...string) error {
 	if err := secpkg.UpToDate("scrit"); err != nil {
 		return err
 	}
-	if fs.NArg() != 0 {
+	if fs.NArg() == 0 {
 		fs.Usage()
 		return flag.ErrHelp
 	}
@@ -65,6 +67,14 @@ func Start(argv0 string, args ...string) error {
 	if err != nil {
 		return err
 	}
+	var keys []netconf.IdentityKey
+	for _, arg := range fs.Args() {
+		key, err := netconf.ParseIdentityKey(arg)
+		if err != nil {
+			return err
+		}
+		keys = append(keys, *key)
+	}
 	return start(netconf.DefNetConfFile, *m, *n, t, t.Add(*signingPeriod),
-		t.Add(*signingPeriod).Add(*validationPeriod))
+		t.Add(*signingPeriod).Add(*validationPeriod), keys)
 }

@@ -34,6 +34,7 @@ func identity(homeDir, secKey string) error {
 	}
 	ik := netconf.NewIdentityKeyEd25519Priv(sec)
 	fmt.Println(string(comment))
+	fmt.Println(ik.MarshalID())
 	fmt.Println(ik.Marshal())
 	return nil
 }

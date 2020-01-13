@@ -13,7 +13,11 @@ type Network struct {
 
 // NewNetwork creates a new network configuration and returns the Network
 // struct.
-func NewNetwork(m, n uint64, signStart, signEnd, validateEnd time.Time) *Network {
+func NewNetwork(
+	m, n uint64,
+	signStart, signEnd, validateEnd time.Time,
+	mintIdentities []IdentityKey,
+) *Network {
 	var network Network
 	network.NetworkEpochs = []NetworkEpoch{
 		{
@@ -22,6 +26,7 @@ func NewNetwork(m, n uint64, signStart, signEnd, validateEnd time.Time) *Network
 			SignStart:      signStart,
 			SignEnd:        signEnd,
 			ValidateEnd:    validateEnd,
+			MintsAdded:     mintIdentities,
 		},
 	}
 	return &network
