@@ -25,4 +25,8 @@ Let's say we have the following three mint identity keys:
     ed25519-boVnUGMNKkI1Pe72m8Kf_9KljL4DBvsOGxbr1wi9flo
     ed25519-er0Phn1PjBzbz3gBUEbFQUIbexZxufELZyzCyfT4A5U
 
+Now we can setup the federation (2-of-3):
+
+        $ scrit-gov start -m 2 -n 3 d25519-vVqGX7eEyH5DNxO_UHm2k8iJAvf-NNv2g1UbZnTnu44 ed25519-boVnUGMNKkI1Pe72m8Kf_9KljL4DBvsOGxbr1wi9flo ed25519-er0Phn1PjBzbz3gBUEbFQUIbexZxufELZyzCyfT4A5U
+
 To be continued...

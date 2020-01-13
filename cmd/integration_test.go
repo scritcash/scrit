@@ -10,7 +10,9 @@ import (
 
 	"github.com/frankbraun/codechain/command"
 	"github.com/frankbraun/codechain/util/seckey"
+	scritGov "github.com/scritcash/scrit/gov/command"
 	scritMint "github.com/scritcash/scrit/mint/command"
+	"github.com/scritcash/scrit/netconf"
 )
 
 // Test setting up a federation of Scrit mints (see doc/federation-setup.md).
@@ -136,7 +138,20 @@ func TestFederationSetup(t *testing.T) {
 	lines = bytes.Split(buf, []byte("\n"))
 	key3 := string(lines[len(lines)-2])
 
-	fmt.Println(key1)
-	fmt.Println(key2)
-	fmt.Println(key3)
+	// setup the federation (2-of-3):
+	if err := os.Chdir(tmpdir); err != nil {
+		t.Error(err)
+	}
+	err = scritGov.Start("scrit-gov start", "-m", "2", "-n", "3", key1, key2, key3)
+	if err != nil {
+		t.Error(err)
+	}
+	n, err := netconf.LoadNetwork(netconf.DefNetConfFile)
+	if err != nil {
+		t.Error(err)
+	}
+	if err := n.Validate(); err != nil {
+		t.Error(err)
+	}
+	fmt.Println(n.Marshal())
 }
