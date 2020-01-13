@@ -11,7 +11,7 @@ First each of the three mints has to generate their mint identity key:
 Afterwards they all display their identity key and send it to the
 federation coordinator (one of the mints should manage the
 [Codechain](https://github.com/frankbraun/codechain) for the new Scrit
-federation.
+federation).
 
     $ scrit-mint identity
 
