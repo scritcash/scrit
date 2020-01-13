@@ -14,6 +14,10 @@ A work in progress Scrit implementation, as described in the
 
      make
 
+### Documentation
+
+- [Setting up a federation of Scrit mints](doc/federation-setup.md)
+
 ### Support
 
 Scrit is 100% free and unencumbered software released into the public
