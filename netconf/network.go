@@ -105,3 +105,33 @@ func (n *Network) Save(filename string) error {
 	}
 	return nil
 }
+
+// HasFuture ensures that the network has an epoch which starts in the future.
+func (n *Network) HasFuture() error {
+	e := n.NetworkEpochs[len(n.NetworkEpochs)-1]
+	if !e.SignStart.After(time.Now().UTC()) {
+		return ErrNoFuture
+	}
+	return nil
+}
+
+// DBCTypes returns a map of all DBCTypes in network.
+func (n *Network) DBCTypes() map[DBCType]bool {
+	dbcTypes := make(map[DBCType]bool)
+	for _, e := range n.NetworkEpochs {
+		for _, add := range e.DBCTypesAdded {
+			dbcTypes[add] = true
+		}
+		for _, remove := range e.DBCTypesRemoved {
+			delete(dbcTypes, remove)
+		}
+	}
+	return dbcTypes
+}
+
+// DBCTypeAdd adds the DBC type to the network.
+// Low-level function without error checking!
+func (n *Network) DBCTypeAdd(dt DBCType) {
+	n.NetworkEpochs[len(n.NetworkEpochs)-1].DBCTypesAdded =
+		append(n.NetworkEpochs[len(n.NetworkEpochs)-1].DBCTypesAdded, dt)
+}

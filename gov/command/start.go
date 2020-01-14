@@ -64,12 +64,12 @@ func Start(argv0 string, args ...string) error {
 	if *verbose {
 		log.Std = log.NewStd(os.Stdout)
 	}
-	if err := secpkg.UpToDate("scrit"); err != nil {
-		return err
-	}
 	if fs.NArg() == 0 {
 		fs.Usage()
 		return flag.ErrHelp
+	}
+	if err := secpkg.UpToDate("scrit"); err != nil {
+		return err
 	}
 	t, err := time.Parse(time.RFC3339, *startSign)
 	if err != nil {

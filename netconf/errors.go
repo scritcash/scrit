@@ -33,3 +33,6 @@ var ErrSignEpochWrongBoundaries = errors.New("netconf: signing epoch boundaries 
 // ErrValidationLongerThanNextSigning is returned when the validation period is
 // longer than the next signing epoch.
 var ErrValidationLongerThanNextSigning = errors.New("netconf: validation period is longer than next signing epoch")
+
+// ErrNoFuture is returned when a network has no epoch which starts in the future.
+var ErrNoFuture = errors.New("netconf: network has no epoch which starts in the future")

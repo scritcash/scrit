@@ -58,12 +58,12 @@ func Identity(argv0 string, args ...string) error {
 	if err := seckey.Check(homedir.ScritMint(), *secKey); err != nil {
 		return err
 	}
-	if err := secpkg.UpToDate("scrit"); err != nil {
-		return err
-	}
 	if fs.NArg() != 0 {
 		fs.Usage()
 		return flag.ErrHelp
+	}
+	if err := secpkg.UpToDate("scrit"); err != nil {
+		return err
 	}
 	return identity(homeDir, *secKey)
 }

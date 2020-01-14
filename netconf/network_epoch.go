@@ -29,7 +29,7 @@ type KeyReplacement struct {
 // DBCType defines a DBC type.
 type DBCType struct {
 	Currency string // the DBC currency
-	Amount   uint64 // per DBC
+	Amount   uint64 // the amount per DBC
 }
 
 // Validate the network epoch.
