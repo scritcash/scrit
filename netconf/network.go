@@ -203,6 +203,19 @@ func (n *Network) MintRemove(key *IdentityKey) {
 		append(n.NetworkEpochs[len(n.NetworkEpochs)-1].MintsRemoved, *key)
 }
 
+// MintReplace replaces the old mint identity key with the new mint identity
+// in the network.
+// Low-level function without error checking!
+func (n *Network) MintReplace(newKey, oldKey *IdentityKey, sig string) {
+	r := KeyReplacement{
+		NewKey:    *newKey,
+		OldKey:    *oldKey,
+		Signature: sig,
+	}
+	n.NetworkEpochs[len(n.NetworkEpochs)-1].MintsReplaced =
+		append(n.NetworkEpochs[len(n.NetworkEpochs)-1].MintsReplaced, r)
+}
+
 // DBCTypes returns a map of all DBCTypes in the network.
 func (n *Network) DBCTypes() map[DBCType]bool {
 	dbcTypes := make(map[DBCType]bool)

@@ -11,6 +11,7 @@ import (
 func usageMint(cmd string) error {
 	fmt.Fprintf(os.Stderr, "Usage: %s add\n", cmd)
 	fmt.Fprintf(os.Stderr, "       %s remove\n", cmd)
+	fmt.Fprintf(os.Stderr, "       %s replace\n", cmd)
 	fmt.Fprintf(os.Stderr, "       %s list\n", cmd)
 	return flag.ErrHelp
 }
@@ -27,6 +28,8 @@ func Mint(argv0 string, args ...string) error {
 		return command.Add(newArgv0, newArgs...)
 	case "remove":
 		return command.Remove(newArgv0, newArgs...)
+	case "replace":
+		return command.Replace(newArgv0, newArgs...)
 	case "list":
 		return command.List(newArgv0, newArgs...)
 	default:
