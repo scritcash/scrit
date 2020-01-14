@@ -171,4 +171,9 @@ func TestFederationSetup(t *testing.T) {
 		t.Error(err)
 	}
 	fmt.Println(n.Marshal())
+
+	err = scritDBCType.List("scrit-gov dbctype list")
+	if err != nil {
+		t.Error(err)
+	}
 }
