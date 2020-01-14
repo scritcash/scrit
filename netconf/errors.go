@@ -38,4 +38,4 @@ var ErrValidationLongerThanNextSigning = errors.New("netconf: validation period 
 var ErrNoFuture = errors.New("netconf: network has no epoch which starts in the future")
 
 // ErrDBCTypesOverlap is returned if the sets DBCTypesAdded and DBCTypesRemoved overlap.
-var ErrDBCTypesOverlap = errors.New("netconf: DBCTypesAdded and DBCTypesRemoved overlap.")
+var ErrDBCTypesOverlap = errors.New("netconf: the DBCTypesAdded and DBCTypesRemoved sets overlap")
