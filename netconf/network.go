@@ -144,7 +144,7 @@ func (n *Network) Mints() map[string]bool {
 	return mints
 }
 
-// MintsValidates validates the mint types.
+// MintsValidate validates the mint types.
 func (n *Network) MintsValidate() error {
 	mints := make(map[string]bool)
 	for _, e := range n.NetworkEpochs {
