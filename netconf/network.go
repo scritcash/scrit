@@ -196,6 +196,13 @@ func (n *Network) MintAdd(key *IdentityKey) {
 		append(n.NetworkEpochs[len(n.NetworkEpochs)-1].MintsAdded, *key)
 }
 
+// MintRemove removes the mint identity key from the network.
+// Low-level function without error checking!
+func (n *Network) MintRemove(key *IdentityKey) {
+	n.NetworkEpochs[len(n.NetworkEpochs)-1].MintsRemoved =
+		append(n.NetworkEpochs[len(n.NetworkEpochs)-1].MintsRemoved, *key)
+}
+
 // DBCTypes returns a map of all DBCTypes in the network.
 func (n *Network) DBCTypes() map[DBCType]bool {
 	dbcTypes := make(map[DBCType]bool)

@@ -10,27 +10,27 @@ import (
 	"github.com/scritcash/scrit/netconf"
 )
 
-func add(net *netconf.Network, key *netconf.IdentityKey) error {
+func remove(net *netconf.Network, key *netconf.IdentityKey) error {
 	// make sure network has a future epoch
 	if err := net.HasFuture(); err != nil {
 		return err
 	}
-	// make sure mint has not been added yet
+	// make sure mint has been added before
 	mints := net.Mints()
-	if mints[key.MarshalID()] {
-		return fmt.Errorf("mint already added: %v", key.MarshalID())
+	if !mints[key.MarshalID()] {
+		return fmt.Errorf("mint not added before: %v", key.MarshalID())
 	}
-	// add mint identity key
-	net.MintAdd(key)
+	// remove mint identity key
+	net.MintRemove(key)
 	return nil
 }
 
-// Add implements the scrit-gov 'mint add' command.
-func Add(argv0 string, args ...string) error {
+// Remove implements the scrit-gov 'mint remove' command.
+func Remove(argv0 string, args ...string) error {
 	fs := flag.NewFlagSet(argv0, flag.ContinueOnError)
 	fs.Usage = func() {
 		fmt.Fprintf(os.Stderr, "Usage: %s mint_identity\n", argv0)
-		fmt.Fprintf(os.Stderr, "Add new mint_identity to %s.\n", netconf.DefNetConfFile)
+		fmt.Fprintf(os.Stderr, "Remove mint_identity from %s.\n", netconf.DefNetConfFile)
 		fs.PrintDefaults()
 	}
 	verbose := fs.Bool("v", false, "Be verbose")
@@ -62,7 +62,7 @@ func Add(argv0 string, args ...string) error {
 		return err
 	}
 	// edit
-	if err := add(net, key); err != nil {
+	if err := remove(net, key); err != nil {
 		return err
 	}
 	// validate again
