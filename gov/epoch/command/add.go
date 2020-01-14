@@ -4,32 +4,22 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/frankbraun/codechain/secpkg"
 	"github.com/frankbraun/codechain/util/log"
 	"github.com/scritcash/scrit/netconf"
+	"github.com/scritcash/scrit/util/def"
 )
 
-func add(net *netconf.Network, currency string, amount uint64) error {
-	// make sure network has a future epoch
-	if err := net.HasFuture(); err != nil {
-		return err
-	}
-	// make sure DBCType has not been defined yet
-	dbcTypes := net.DBCTypes()
-	dbcType := netconf.DBCType{
-		Currency: currency,
-		Amount:   amount,
-	}
-	if dbcTypes[dbcType] {
-		return fmt.Errorf("DBC type already defined: %v", dbcType)
-	}
-	// add DBCType
-	net.DBCTypeAdd(dbcType)
+func add(net *netconf.Network, siginingPeriod, validationPeriod time.Duration) error {
+	// TODO: check if signingPeriod and/or validationPeriod changes from the
+	// period used in the last epoch.
+	net.EpochAdd(siginingPeriod, validationPeriod)
 	return nil
 }
 
-// Add implements the scrit-gov 'dbctype add' command.
+// Add implements the scrit-gov 'epoch add' command.
 func Add(argv0 string, args ...string) error {
 	fs := flag.NewFlagSet(argv0, flag.ContinueOnError)
 	fs.Usage = func() {
@@ -37,22 +27,14 @@ func Add(argv0 string, args ...string) error {
 		fmt.Fprintf(os.Stderr, "Add new DBC type to future epoch of %s.\n", netconf.DefNetConfFile)
 		fs.PrintDefaults()
 	}
-	currency := fs.String("currency", "", "Currency of DBC type to add")
-	amount := fs.Uint64("amount", 0, "Amount of DBC type to add")
+	signingPeriod := fs.Duration("signing-period", def.SigningPeriod, "Length of signing period")
+	validationPeriod := fs.Duration("validation-period", def.ValidationPeriod, "Length of validation period")
 	verbose := fs.Bool("v", false, "Be verbose")
 	if err := fs.Parse(args); err != nil {
 		return err
 	}
 	if *verbose {
 		log.Std = log.NewStd(os.Stdout)
-	}
-	if *currency == "" {
-		fmt.Fprintf(os.Stderr, "%s: option -currency is mandatory\n", argv0)
-		return flag.ErrHelp
-	}
-	if *amount == 0 {
-		fmt.Fprintf(os.Stderr, "%s: option -amount is mandatory\n", argv0)
-		return flag.ErrHelp
 	}
 	if fs.NArg() != 0 {
 		fs.Usage()
@@ -71,7 +53,7 @@ func Add(argv0 string, args ...string) error {
 		return err
 	}
 	// edit
-	if err := add(net, *currency, *amount); err != nil {
+	if err := add(net, *signingPeriod, *validationPeriod); err != nil {
 		return err
 	}
 	// validate again

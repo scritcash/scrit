@@ -175,3 +175,17 @@ func (n *Network) DBCTypeRemove(dt DBCType) {
 	n.NetworkEpochs[len(n.NetworkEpochs)-1].DBCTypesRemoved =
 		append(n.NetworkEpochs[len(n.NetworkEpochs)-1].DBCTypesRemoved, dt)
 }
+
+// EpochAdd adds another epoch with the given signing and validation period to
+// the network.
+// Low-level function without error checking!
+func (n *Network) EpochAdd(signingPeriod, validationPeriod time.Duration) {
+	lastEpoch := n.NetworkEpochs[len(n.NetworkEpochs)-1]
+	var newEpoch NetworkEpoch
+	newEpoch.QuorumM = lastEpoch.QuorumM
+	newEpoch.NumberOfMintsN = lastEpoch.NumberOfMintsN
+	newEpoch.SignStart = lastEpoch.SignEnd
+	newEpoch.SignEnd = newEpoch.SignStart.Add(signingPeriod)
+	newEpoch.ValidateEnd = newEpoch.SignStart.Add(validationPeriod)
+	n.NetworkEpochs = append(n.NetworkEpochs, newEpoch)
+}

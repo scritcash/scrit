@@ -54,8 +54,8 @@ func Start(argv0 string, args ...string) error {
 	m := fs.Uint64("m", 2, "The quorum m")
 	n := fs.Uint64("n", 3, "Number of mints n")
 	startSign := fs.String("start-sign", startTime(), "Start of signing epoch")
-	signingPeriod := fs.Duration("signing-period", def.SigningPeriod, "Signing period")
-	validationPeriod := fs.Duration("validation-period", def.ValidationPeriod, "Validation period")
+	signingPeriod := fs.Duration("signing-period", def.SigningPeriod, "Length of signing period")
+	validationPeriod := fs.Duration("validation-period", def.ValidationPeriod, "Length of validation period")
 	verbose := fs.Bool("v", false, "Be verbose")
 	if err := fs.Parse(args); err != nil {
 		return err
