@@ -11,6 +11,7 @@ import (
 	"github.com/frankbraun/codechain/command"
 	"github.com/frankbraun/codechain/util/seckey"
 	scritGov "github.com/scritcash/scrit/gov/command"
+	scritDBCType "github.com/scritcash/scrit/gov/dbctype/command"
 	scritMint "github.com/scritcash/scrit/mint/command"
 	"github.com/scritcash/scrit/netconf"
 )
@@ -146,6 +147,22 @@ func TestFederationSetup(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
+
+	// define first DBC types (in denominations of 1, 2, and 5 EUR)
+	err = scritDBCType.Add("scrit-gov dbctype add", "-currency", "EUR", "-amount", "100000000")
+	if err != nil {
+		t.Error(err)
+	}
+	err = scritDBCType.Add("scrit-gov dbctype add", "-currency", "EUR", "-amount", "200000000")
+	if err != nil {
+		t.Error(err)
+	}
+	err = scritDBCType.Add("scrit-gov dbctype add", "-currency", "EUR", "-amount", "500000000")
+	if err != nil {
+		t.Error(err)
+	}
+
+	// load, validate, and display network configuration
 	n, err := netconf.LoadNetwork(netconf.DefNetConfFile)
 	if err != nil {
 		t.Error(err)

@@ -27,6 +27,12 @@ Let's say we have the following three mint identity keys:
 
 Now we can setup the federation (2-of-3):
 
-        $ scrit-gov start -m 2 -n 3 d25519-vVqGX7eEyH5DNxO_UHm2k8iJAvf-NNv2g1UbZnTnu44 ed25519-boVnUGMNKkI1Pe72m8Kf_9KljL4DBvsOGxbr1wi9flo ed25519-er0Phn1PjBzbz3gBUEbFQUIbexZxufELZyzCyfT4A5U
+    $ scrit-gov start -m 2 -n 3 ed25519-vVqGX7eEyH5DNxO_UHm2k8iJAvf-NNv2g1UbZnTnu44 ed25519-boVnUGMNKkI1Pe72m8Kf_9KljL4DBvsOGxbr1wi9flo ed25519-er0Phn1PjBzbz3gBUEbFQUIbexZxufELZyzCyfT4A5U
+
+Define first DBC types (in denominations of 1, 2, and 5 EUR):
+
+    $ scrit-gov dbctype add -currency EUR -amount 100000000
+    $ scrit-gov dbctype add -currency EUR -amount 200000000
+    $ scrit-gov dbctype add -currency EUR -amount 500000000
 
 To be continued...
