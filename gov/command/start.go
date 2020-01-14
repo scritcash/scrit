@@ -10,9 +10,8 @@ import (
 	"github.com/frankbraun/codechain/util/file"
 	"github.com/frankbraun/codechain/util/log"
 	"github.com/scritcash/scrit/netconf"
+	"github.com/scritcash/scrit/util/def"
 )
-
-const defaultPeriod = 30 * 24 * time.Hour
 
 func start(
 	filename string,
@@ -55,8 +54,8 @@ func Start(argv0 string, args ...string) error {
 	m := fs.Uint64("m", 2, "The quorum m")
 	n := fs.Uint64("n", 3, "Number of mints n")
 	startSign := fs.String("start-sign", startTime(), "Start of signing epoch")
-	signingPeriod := fs.Duration("signing-period", defaultPeriod, "Signing period")
-	validationPeriod := fs.Duration("validation-period", defaultPeriod, "Validation period")
+	signingPeriod := fs.Duration("signing-period", def.SigningPeriod, "Signing period")
+	validationPeriod := fs.Duration("validation-period", def.ValidationPeriod, "Validation period")
 	verbose := fs.Bool("v", false, "Be verbose")
 	if err := fs.Parse(args); err != nil {
 		return err
