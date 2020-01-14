@@ -10,25 +10,21 @@ import (
 	"github.com/scritcash/scrit/netconf"
 )
 
-func replace(
-	net *netconf.Network,
-	newKey, oldKey *netconf.IdentityKey,
-	sig string,
-) error {
+func replace(net *netconf.Network, r *netconf.KeyReplacement) error {
 	// make sure network has a future epoch
 	if err := net.HasFuture(); err != nil {
 		return err
 	}
 	// make sure mint has been added before
 	mints := net.Mints()
-	if mints[newKey.MarshalID()] {
-		return fmt.Errorf("mint to replace to already added: %v", newKey.MarshalID())
+	if mints[r.NewKey.MarshalID()] {
+		return fmt.Errorf("mint to replace to already added: %v", r.NewKey.MarshalID())
 	}
-	if !mints[oldKey.MarshalID()] {
-		return fmt.Errorf("mint to replace from not added before: %v", oldKey.MarshalID())
+	if !mints[r.OldKey.MarshalID()] {
+		return fmt.Errorf("mint to replace from not added before: %v", r.OldKey.MarshalID())
 	}
 	// remove mint identity key
-	net.MintReplace(newKey, oldKey, sig)
+	net.MintReplace(r)
 	return nil
 }
 
@@ -65,6 +61,10 @@ func Replace(argv0 string, args ...string) error {
 		return err
 	}
 	sig := fs.Arg(2)
+	r := netconf.NewKeyReplacement(newKey, oldKey, sig)
+	if err := r.Verify(); err != nil {
+		return err
+	}
 	// load
 	net, err := netconf.LoadNetwork(netconf.DefNetConfFile)
 	if err != nil {
@@ -75,7 +75,7 @@ func Replace(argv0 string, args ...string) error {
 		return err
 	}
 	// edit
-	if err := replace(net, newKey, oldKey, sig); err != nil {
+	if err := replace(net, r); err != nil {
 		return err
 	}
 	// validate again

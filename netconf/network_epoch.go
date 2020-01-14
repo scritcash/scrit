@@ -19,13 +19,6 @@ type NetworkEpoch struct {
 	DBCTypesRemoved []DBCType        // DBC types removed in this epoch
 }
 
-// KeyReplacement defines a mint identity key replacement.
-type KeyReplacement struct {
-	NewKey    IdentityKey // the new identity key
-	OldKey    IdentityKey // the replaced identity key
-	Signature string      // of new key by replaced key
-}
-
 // DBCType defines a DBC type.
 type DBCType struct {
 	Currency string // the DBC currency

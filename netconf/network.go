@@ -171,6 +171,9 @@ func (n *Network) MintsValidate() error {
 			delete(mints, id)
 		}
 		for _, replace := range e.MintsReplaced {
+			if err := replace.Verify(); err != nil {
+				return err
+			}
 			oldID := replace.OldKey.MarshalID()
 			newID := replace.NewKey.MarshalID()
 			// make sure the mint to replace is actually there
@@ -206,14 +209,9 @@ func (n *Network) MintRemove(key *IdentityKey) {
 // MintReplace replaces the old mint identity key with the new mint identity
 // in the network.
 // Low-level function without error checking!
-func (n *Network) MintReplace(newKey, oldKey *IdentityKey, sig string) {
-	r := KeyReplacement{
-		NewKey:    *newKey,
-		OldKey:    *oldKey,
-		Signature: sig,
-	}
+func (n *Network) MintReplace(r *KeyReplacement) {
 	n.NetworkEpochs[len(n.NetworkEpochs)-1].MintsReplaced =
-		append(n.NetworkEpochs[len(n.NetworkEpochs)-1].MintsReplaced, r)
+		append(n.NetworkEpochs[len(n.NetworkEpochs)-1].MintsReplaced, *r)
 }
 
 // DBCTypes returns a map of all DBCTypes in the network.
