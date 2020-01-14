@@ -168,3 +168,10 @@ func (n *Network) DBCTypeAdd(dt DBCType) {
 	n.NetworkEpochs[len(n.NetworkEpochs)-1].DBCTypesAdded =
 		append(n.NetworkEpochs[len(n.NetworkEpochs)-1].DBCTypesAdded, dt)
 }
+
+// DBCTypeRemove removes the DBC type from the network.
+// Low-level function without error checking!
+func (n *Network) DBCTypeRemove(dt DBCType) {
+	n.NetworkEpochs[len(n.NetworkEpochs)-1].DBCTypesRemoved =
+		append(n.NetworkEpochs[len(n.NetworkEpochs)-1].DBCTypesRemoved, dt)
+}
