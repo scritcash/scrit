@@ -12,6 +12,7 @@ import (
 	"github.com/frankbraun/codechain/util/seckey"
 	scritGov "github.com/scritcash/scrit/gov/command"
 	scritDBCType "github.com/scritcash/scrit/gov/dbctype/command"
+	scritEpoch "github.com/scritcash/scrit/gov/epoch/command"
 	scritMint "github.com/scritcash/scrit/mint/command"
 	"github.com/scritcash/scrit/netconf"
 )
@@ -158,6 +159,12 @@ func TestFederationSetup(t *testing.T) {
 		t.Error(err)
 	}
 	err = scritDBCType.Add("scrit-gov dbctype add", "-currency", "EUR", "-amount", "500000000")
+	if err != nil {
+		t.Error(err)
+	}
+
+	// define the second signing epoch
+	err = scritEpoch.Add("scrit-gov epoch add")
 	if err != nil {
 		t.Error(err)
 	}

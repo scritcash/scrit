@@ -24,7 +24,7 @@ var ErrSignEpochStartNotBeforeSignEnd = errors.New("netconf: signing epoch start
 
 // ErrSignEpochEndNotBeforeValidateEnd is returned when the signing epoch start is
 // not before the end.
-var ErrSignEpochEndNotBeforeValidateEnd = errors.New("netconf: signing epoch end is not before end validate end")
+var ErrSignEpochEndNotBeforeValidateEnd = errors.New("netconf: signing epoch end is not before validation end")
 
 // ErrSignEpochWrongBoundaries is returned when the signing epoch boundaries
 // do not match exactly.

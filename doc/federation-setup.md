@@ -35,4 +35,8 @@ Define first DBC types (in denominations of 1, 2, and 5 EUR):
     $ scrit-gov dbctype add -currency EUR -amount 200000000
     $ scrit-gov dbctype add -currency EUR -amount 500000000
 
+Define the second signing epoch
+
+    $ scrit-gov epoch add
+
 To be continued...

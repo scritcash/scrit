@@ -186,6 +186,6 @@ func (n *Network) EpochAdd(signingPeriod, validationPeriod time.Duration) {
 	newEpoch.NumberOfMintsN = lastEpoch.NumberOfMintsN
 	newEpoch.SignStart = lastEpoch.SignEnd
 	newEpoch.SignEnd = newEpoch.SignStart.Add(signingPeriod)
-	newEpoch.ValidateEnd = newEpoch.SignStart.Add(validationPeriod)
+	newEpoch.ValidateEnd = newEpoch.SignEnd.Add(validationPeriod)
 	n.NetworkEpochs = append(n.NetworkEpochs, newEpoch)
 }
