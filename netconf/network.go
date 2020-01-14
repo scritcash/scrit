@@ -70,6 +70,11 @@ func (n *Network) Validate() error {
 		}
 	}
 
+	// validate Mints
+	if err := n.MintsValidate(); err != nil {
+		return err
+	}
+
 	// validate DBC types
 	if err := n.DBCTypesValidate(); err != nil {
 		return err
@@ -121,7 +126,77 @@ func (n *Network) HasFuture() error {
 	return nil
 }
 
-// DBCTypes returns a map of all DBCTypes in network.
+// Mints returns a map of all mints in the network.
+func (n *Network) Mints() map[string]bool {
+	mints := make(map[string]bool)
+	for _, e := range n.NetworkEpochs {
+		for _, add := range e.MintsAdded {
+			mints[add.MarshalID()] = true
+		}
+		for _, remove := range e.MintsRemoved {
+			delete(mints, remove.MarshalID())
+		}
+		for _, replace := range e.MintsReplaced {
+			delete(mints, replace.OldKey.MarshalID())
+			mints[replace.NewKey.MarshalID()] = true
+		}
+	}
+	return mints
+}
+
+// MintsValidates validates the mint types.
+func (n *Network) MintsValidate() error {
+	mints := make(map[string]bool)
+	for _, e := range n.NetworkEpochs {
+		// make sure the MintsAdded, MintsRemoved, and MintsReplaced sets are
+		// disjunct
+		if err := e.MintsDisjunct(); err != nil {
+			return err
+		}
+		for _, add := range e.MintsAdded {
+			// make sure we do not add an exisiting mint
+			id := add.MarshalID()
+			if mints[id] {
+				return fmt.Errorf("netconf: mint already added: %v", id)
+			}
+			mints[id] = true
+		}
+		for _, remove := range e.MintsRemoved {
+			id := remove.MarshalID()
+			// make sure the mint to delete is actually there
+			_, present := mints[id]
+			if !present {
+				return fmt.Errorf("netconf: mint to remove not added: %v", id)
+			}
+			delete(mints, id)
+		}
+		for _, replace := range e.MintsReplaced {
+			oldID := replace.OldKey.MarshalID()
+			newID := replace.NewKey.MarshalID()
+			// make sure the mint to replace is actually there
+			_, present := mints[oldID]
+			if !present {
+				return fmt.Errorf("netconf: mint to replace not added: %v", oldID)
+			}
+			delete(mints, oldID)
+			// make sure we do not replace to an exisiting mint
+			if mints[newID] {
+				return fmt.Errorf("netconf: mint to replace to already added: %v", newID)
+			}
+			mints[newID] = true
+		}
+	}
+	return nil
+}
+
+// MintAdd adds the mint identity key to the network.
+// Low-level function without error checking!
+func (n *Network) MintAdd(key *IdentityKey) {
+	n.NetworkEpochs[len(n.NetworkEpochs)-1].MintsAdded =
+		append(n.NetworkEpochs[len(n.NetworkEpochs)-1].MintsAdded, *key)
+}
+
+// DBCTypes returns a map of all DBCTypes in the network.
 func (n *Network) DBCTypes() map[DBCType]bool {
 	dbcTypes := make(map[DBCType]bool)
 	for _, e := range n.NetworkEpochs {

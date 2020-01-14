@@ -14,6 +14,7 @@ func usage() {
 	fmt.Fprintf(os.Stderr, "Usage: %s start\n", cmd)
 	fmt.Fprintf(os.Stderr, "       %s dbctype\n", cmd)
 	fmt.Fprintf(os.Stderr, "       %s epoch\n", cmd)
+	fmt.Fprintf(os.Stderr, "       %s mint\n", cmd)
 	fmt.Fprintf(os.Stderr, "       %s status\n", cmd)
 	os.Exit(2)
 }
@@ -32,6 +33,8 @@ func main() {
 		err = command.DBCType(argv0, args...)
 	case "epoch":
 		err = command.Epoch(argv0, args...)
+	case "mint":
+		err = command.Mint(argv0, args...)
 	case "status":
 		err = command.Status(argv0, args...)
 	default:

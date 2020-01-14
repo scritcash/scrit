@@ -63,6 +63,41 @@ func (e *NetworkEpoch) Validate() error {
 	return nil
 }
 
+// MintsDisjunct make sure the MintsAdded, MintsRemoved, and MintsReplaced
+// sets are disjunct.
+func (e *NetworkEpoch) MintsDisjunct() error {
+	addedMints := make(map[string]bool)
+	removedMints := make(map[string]bool)
+	replacedMints := make(map[string]bool)
+	// fill maps
+	for _, add := range e.MintsAdded {
+		addedMints[add.MarshalID()] = true
+	}
+	for _, remove := range e.MintsRemoved {
+		removedMints[remove.MarshalID()] = true
+	}
+	for _, replace := range e.MintsReplaced {
+		replacedMints[replace.OldKey.MarshalID()] = true
+	}
+	// check
+	for _, replace := range e.MintsReplaced {
+		newID := replace.NewKey.MarshalID()
+		oldID := replace.OldKey.MarshalID()
+		if addedMints[newID] || removedMints[newID] || replacedMints[newID] {
+			return ErrMintsOverlap
+		}
+		if addedMints[oldID] || removedMints[oldID] {
+			return ErrMintsOverlap
+		}
+	}
+	for _, remove := range e.MintsRemoved {
+		if addedMints[remove.MarshalID()] {
+			return ErrMintsOverlap
+		}
+	}
+	return nil
+}
+
 // DBCTypesDisjunct makes sure the DBCTypesAdded and DBCTypesRemoved sets from the epoch are disjunct.
 func (e *NetworkEpoch) DBCTypesDisjunct() error {
 	dbcTypes := make(map[DBCType]bool)
