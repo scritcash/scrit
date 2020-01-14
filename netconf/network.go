@@ -3,7 +3,10 @@ package netconf
 import (
 	"encoding/json"
 	"io/ioutil"
+	"os"
 	"time"
+
+	"github.com/frankbraun/codechain/util/file"
 )
 
 // Network defines a Scrit network.
@@ -85,5 +88,20 @@ func (n *Network) Save(filename string) error {
 	if err != nil {
 		return err
 	}
-	return ioutil.WriteFile(filename, jsn, 0755)
+	exists, err := file.Exists(filename)
+	if err != nil {
+		return err
+	}
+	if exists {
+		if err := os.Rename(filename, "."+filename); err != nil {
+			return err
+		}
+	}
+	if err := ioutil.WriteFile(filename, jsn, 0755); err != nil {
+		return err
+	}
+	if exists {
+		return os.Remove("." + filename)
+	}
+	return nil
 }
