@@ -10,6 +10,7 @@ import (
 
 func usageEpoch(cmd string) error {
 	fmt.Fprintf(os.Stderr, "Usage: %s add\n", cmd)
+	fmt.Fprintf(os.Stderr, "       %s setquorum\n", cmd)
 	return flag.ErrHelp
 }
 
@@ -23,6 +24,8 @@ func Epoch(argv0 string, args ...string) error {
 	switch args[0] {
 	case "add":
 		return command.Add(newArgv0, newArgs...)
+	case "setquorum":
+		return command.SetQuorum(newArgv0, newArgs...)
 	default:
 		return usageEpoch(argv0)
 	}

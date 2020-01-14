@@ -189,3 +189,9 @@ func (n *Network) EpochAdd(signingPeriod, validationPeriod time.Duration) {
 	newEpoch.ValidateEnd = newEpoch.SignEnd.Add(validationPeriod)
 	n.NetworkEpochs = append(n.NetworkEpochs, newEpoch)
 }
+
+// SetQuorum sets the quorum for the last epoch.
+// Low-level function without error checking!
+func (n *Network) SetQuorum(m uint64) {
+	n.NetworkEpochs[len(n.NetworkEpochs)-1].QuorumM = m
+}
