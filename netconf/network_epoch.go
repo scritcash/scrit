@@ -33,32 +33,46 @@ type DBCType struct {
 }
 
 // Validate the network epoch.
-func (epoch *NetworkEpoch) Validate() error {
+func (e *NetworkEpoch) Validate() error {
 	// m > 0
-	if epoch.QuorumM == 0 {
+	if e.QuorumM == 0 {
 		return ErrZeroM
 	}
 	// n > 0
-	if epoch.NumberOfMintsN == 0 {
+	if e.NumberOfMintsN == 0 {
 		return ErrZeroN
 	}
 	// m <= n
-	if epoch.QuorumM > epoch.NumberOfMintsN {
+	if e.QuorumM > e.NumberOfMintsN {
 		return ErrMGreaterN
 	}
 	// m > n/2
-	if epoch.QuorumM <= epoch.NumberOfMintsN/2 {
+	if e.QuorumM <= e.NumberOfMintsN/2 {
 		return ErrQuorumTooSmall
 	}
 
 	// sign epoch start < sign epoch end
-	if !epoch.SignStart.Before(epoch.SignEnd) {
+	if !e.SignStart.Before(e.SignEnd) {
 		return ErrSignEpochStartNotBeforeSignEnd
 	}
 	// sign epoch end < validation epoch end
-	if !epoch.SignEnd.Before(epoch.ValidateEnd) {
+	if !e.SignEnd.Before(e.ValidateEnd) {
 		return ErrSignEpochEndNotBeforeValidateEnd
 	}
 
+	return nil
+}
+
+// DBCTypesDisjunct makes sure the DBCTypesAdded and DBCTypesRemoved sets from the epoch are disjunct.
+func (e *NetworkEpoch) DBCTypesDisjunct() error {
+	dbcTypes := make(map[DBCType]bool)
+	for _, add := range e.DBCTypesAdded {
+		dbcTypes[add] = true
+	}
+	for _, remove := range e.DBCTypesRemoved {
+		if dbcTypes[remove] {
+			return ErrDBCTypesOverlap
+		}
+	}
 	return nil
 }

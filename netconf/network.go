@@ -2,6 +2,7 @@ package netconf
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"os"
 	"time"
@@ -69,6 +70,11 @@ func (n *Network) Validate() error {
 		}
 	}
 
+	// validate DBC types
+	if err := n.DBCTypesValidate(); err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -127,6 +133,33 @@ func (n *Network) DBCTypes() map[DBCType]bool {
 		}
 	}
 	return dbcTypes
+}
+
+// DBCTypesValidate validates the DBC types.
+func (n *Network) DBCTypesValidate() error {
+	dbcTypes := make(map[DBCType]bool)
+	for _, e := range n.NetworkEpochs {
+		// make sure the DBCTypesAdded and DBCTypesRemoved sets are disjunct
+		if err := e.DBCTypesDisjunct(); err != nil {
+			return err
+		}
+		for _, add := range e.DBCTypesAdded {
+			// make sure we do not add an exisiting DBC type
+			if dbcTypes[add] {
+				return fmt.Errorf("netconf: DBC type already defined: %v", add)
+			}
+			dbcTypes[add] = true
+		}
+		for _, remove := range e.DBCTypesRemoved {
+			// make sure the type to delete is actually there
+			_, present := dbcTypes[remove]
+			if !present {
+				return fmt.Errorf("netconf: DBC type not defined: %v", remove)
+			}
+			delete(dbcTypes, remove)
+		}
+	}
+	return nil
 }
 
 // DBCTypeAdd adds the DBC type to the network.
