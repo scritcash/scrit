@@ -35,12 +35,17 @@ Define first DBC types (in denominations of 1, 2, and 5 EUR):
     $ scrit-gov dbctype add -currency EUR -amount 200000000
     $ scrit-gov dbctype add -currency EUR -amount 500000000
 
+Now each of the three mints creates their key lists:
+
+    $ scrit-mint keylist create -desc mint_name https://mint.example.com
+
 Define the second signing epoch
 
     $ scrit-gov epoch add
 
-Now each of the three mints creates their key list
+Now each of the three mints extend their key lists (can be skipped if
+`scrit-gov epoch add` is called _before_ `scrit-mint keylist create`):
 
-    $ scrit-mint keylist create -desc mint_name https://mint.example.com
+    $ scrit-mint keylist extend
 
 To be continued...

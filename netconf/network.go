@@ -104,7 +104,7 @@ func (n *Network) Save(filename string) error {
 		return err
 	}
 	if exists {
-		if err := os.Rename(filename, "."+filename); err != nil {
+		if err := os.Rename(filename, filename+".bac"); err != nil {
 			return err
 		}
 	}
@@ -112,7 +112,7 @@ func (n *Network) Save(filename string) error {
 		return err
 	}
 	if exists {
-		return os.Remove("." + filename)
+		return os.Remove(filename + ".bac")
 	}
 	return nil
 }

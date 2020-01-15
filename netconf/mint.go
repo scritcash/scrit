@@ -57,7 +57,7 @@ func (m *Mint) generateKeys(ik *IdentityKey, n *Network, start int) error {
 			m.MintEpochs[i].KeyList = append(m.MintEpochs[i].KeyList, sk)
 		}
 	}
-	return m.sign(start)
+	return m.sign(ik, start)
 }
 
 func NewMint(
@@ -131,7 +131,7 @@ func (m *Mint) Save(filename string, perm os.FileMode) error {
 		return err
 	}
 	if exists {
-		if err := os.Rename(filename, "."+filename); err != nil {
+		if err := os.Rename(filename, filename+".bac"); err != nil {
 			return err
 		}
 	}
@@ -139,7 +139,7 @@ func (m *Mint) Save(filename string, perm os.FileMode) error {
 		return err
 	}
 	if exists {
-		return os.Remove("." + filename)
+		return os.Remove(filename + ".bac")
 	}
 	return nil
 
@@ -160,10 +160,10 @@ func LoadMint(filename string) (*Mint, error) {
 }
 
 // sign all mint epochs in mint
-func (m *Mint) sign(start int) error {
+func (m *Mint) sign(ik *IdentityKey, start int) error {
 	for i := start; i < len(m.MintEpochs); i++ {
 		e := m.MintEpochs[i]
-		if err := e.sign(&m.MintIdentityKey); err != nil {
+		if err := e.sign(ik); err != nil {
 			return err
 		}
 	}
