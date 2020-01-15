@@ -10,6 +10,9 @@ import (
 	"github.com/frankbraun/codechain/util/seckey"
 )
 
+// Load secret key from homeDir/def.SecretsSubdir.
+// If secKey is empty a secret key from homeDir/def.SecretsSubdir is loaded
+// only if it contains exactly one secret.
 func Load(homeDir, secKey string) (*[64]byte, *[64]byte, []byte, error) {
 	if secKey == "" {
 		secretDir := filepath.Join(homeDir, def.SecretsSubDir)
