@@ -5,11 +5,7 @@ import (
 )
 
 func TestSigningKey(t *testing.T) {
-	ik, err := NewIdentityKey()
-	if err != nil {
-		t.Error(err)
-	}
-	_, err = NewSigningKey("EUR", 100000000, ik)
+	_, err := NewSigningKey("EUR", 100000000)
 	if err != nil {
 		t.Error(err)
 	}

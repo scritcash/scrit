@@ -11,14 +11,13 @@ type SigningKey struct {
 	Amount   uint64             // the amount this key signs, 8 digits after the dot
 	SigAlgo  string             // signature algorithm
 	PubKey   []byte             // public key
-	privKey  ed25519.PrivateKey // private key
+	PrivKey  ed25519.PrivateKey `json:",omitempty"` // private key
 }
 
 // NewSigningKey generates a new signing key.
 func NewSigningKey(
 	currency string,
 	amount uint64,
-	ik *IdentityKey,
 ) (*SigningKey, error) {
 	var sk SigningKey
 	sk.Currency = currency
@@ -29,6 +28,6 @@ func NewSigningKey(
 		return nil, err
 	}
 	sk.PubKey = pubKey
-	sk.privKey = privKey
+	sk.PrivKey = privKey
 	return &sk, nil
 }
