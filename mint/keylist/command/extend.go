@@ -7,7 +7,6 @@ import (
 	"path/filepath"
 
 	"github.com/frankbraun/codechain/secpkg"
-	"github.com/frankbraun/codechain/util/file"
 	"github.com/frankbraun/codechain/util/log"
 	"github.com/frankbraun/codechain/util/seckey"
 	"github.com/scritcash/scrit/mint/identity"
@@ -15,37 +14,48 @@ import (
 	"github.com/scritcash/scrit/util/homedir"
 )
 
-func gen(net *netconf.Network, homeDir, secKey string) error {
+func extend(net *netconf.Network, homeDir, secKey string) error {
+	// load identity key
 	sec, _, _, err := identity.Load(homeDir, secKey)
 	if err != nil {
 		return err
 	}
 	ik := netconf.NewIdentityKeyEd25519Priv(sec)
-	filename := filepath.Join(netconf.DefMintDir, ik.MarshalID()+".json")
-	exists, err := file.Exists(filename)
+
+	id := ik.MarshalID()
+	privFilename := filepath.Join(homeDir, netconf.DefPrivKeyListDir, id+".json")
+	confFilename := filepath.Join(netconf.DefMintDir, id+".json")
+
+	// make sure these files exist already and are valid
+	mint, err := netconf.LoadMint(privFilename)
 	if err != nil {
 		return err
 	}
-
-	// TODO: continue here
-	if exists {
-		_, err := netconf.LoadMint(filename)
-		if err != nil {
-			return err
-		}
-	} else {
-		fmt.Printf("file '%s' does not exist\n", filename)
+	if _, err := netconf.LoadMint(confFilename); err != nil {
+		return err
 	}
 
-	return nil
+	// extend key list
+	if err := mint.Extend(ik, net); err != nil {
+		return err
+	}
+
+	// save private key list
+	if err := mint.Save(privFilename, 0700); err != nil {
+		return err
+	}
+	// prune private keys
+	mint.PrunePrivKeys()
+	// save public configuration file
+	return mint.Save(confFilename, 0755)
 }
 
-// Gen implements the scrit-mint 'keylist gen' command.
-func Gen(argv0 string, args ...string) error {
+// Extend implements the scrit-mint 'keylist extend' command.
+func Extend(argv0 string, args ...string) error {
 	fs := flag.NewFlagSet(argv0, flag.ContinueOnError)
 	fs.Usage = func() {
 		fmt.Fprintf(os.Stderr, "Usage: %s\n", argv0)
-		fmt.Fprintf(os.Stderr, "Generate keylist for %s.\n", netconf.DefNetConfFile)
+		fmt.Fprintf(os.Stderr, "Extend key list for %s.\n", netconf.DefNetConfFile)
 		fs.PrintDefaults()
 	}
 	secKey := fs.String("s", "", "Secret key file")
@@ -74,6 +84,5 @@ func Gen(argv0 string, args ...string) error {
 	if err := net.Validate(); err != nil {
 		return err
 	}
-	fmt.Println(net.Marshal())
-	return gen(net, homeDir, *secKey)
+	return extend(net, homeDir, *secKey)
 }

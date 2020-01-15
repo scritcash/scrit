@@ -4,9 +4,12 @@ import (
 	"crypto/ed25519"
 	"crypto/rand"
 	"encoding/json"
+	"errors"
 	"io/ioutil"
+	"os"
 	"time"
 
+	"github.com/frankbraun/codechain/util/file"
 	"github.com/scritcash/scrit/binencode"
 )
 
@@ -28,9 +31,10 @@ type MintEpoch struct {
 	KeyListSignatures [][]byte      // signatures of key list (identity signature last)
 }
 
-func (m *Mint) generateKeys(ik *IdentityKey, n *Network) error {
+func (m *Mint) generateKeys(ik *IdentityKey, n *Network, start int) error {
 	dbcTypes := make(map[DBCType]bool)
-	for i, e := range n.NetworkEpochs {
+	for i := start; i < len(n.NetworkEpochs); i++ {
+		e := n.NetworkEpochs[i]
 		for _, add := range e.DBCTypesAdded {
 			dbcTypes[add] = true
 		}
@@ -53,7 +57,7 @@ func (m *Mint) generateKeys(ik *IdentityKey, n *Network) error {
 			m.MintEpochs[i].KeyList = append(m.MintEpochs[i].KeyList, sk)
 		}
 	}
-	return m.sign()
+	return m.sign(start)
 }
 
 func NewMint(
@@ -74,10 +78,39 @@ func NewMint(
 		m.MintEpochs = append(m.MintEpochs, me)
 	}
 	m.URLs = urls
-	if err := m.generateKeys(ik, n); err != nil {
+	if err := m.generateKeys(ik, n, 0); err != nil {
 		return nil, err
 	}
 	return &m, nil
+}
+
+func (m *Mint) Extend(ik *IdentityKey, n *Network) error {
+	start := 0
+	for i, ne := range n.NetworkEpochs {
+		if i < len(m.MintEpochs) {
+			me := m.MintEpochs[i]
+			if me.SignStart != ne.SignStart {
+				return errors.New("netconf: epoch signature starts do not match")
+			}
+			if me.SignEnd != ne.SignEnd {
+				return errors.New("netconf: epoch signature ends do not match")
+			}
+			if me.ValidateEnd != ne.ValidateEnd {
+				return errors.New("netconf: epoch validation ends do not match")
+			}
+		} else {
+			if start == 0 {
+				start = i
+			}
+			me := &MintEpoch{
+				SignStart:   ne.SignStart,
+				SignEnd:     ne.SignEnd,
+				ValidateEnd: ne.ValidateEnd,
+			}
+			m.MintEpochs = append(m.MintEpochs, me)
+		}
+	}
+	return m.generateKeys(ik, n, start)
 }
 
 func (m *Mint) PrunePrivKeys() {
@@ -88,12 +121,28 @@ func (m *Mint) PrunePrivKeys() {
 	}
 }
 
-func (m *Mint) Save(filename string) error {
+func (m *Mint) Save(filename string, perm os.FileMode) error {
 	jsn, err := json.MarshalIndent(m, "", "  ")
 	if err != nil {
 		panic(err) // should never happen
 	}
-	return ioutil.WriteFile(filename, jsn, 0700)
+	exists, err := file.Exists(filename)
+	if err != nil {
+		return err
+	}
+	if exists {
+		if err := os.Rename(filename, "."+filename); err != nil {
+			return err
+		}
+	}
+	if err := ioutil.WriteFile(filename, jsn, perm); err != nil {
+		return err
+	}
+	if exists {
+		return os.Remove("." + filename)
+	}
+	return nil
+
 }
 
 // LoadMint loads a mint configuration from filename and return the
@@ -111,8 +160,9 @@ func LoadMint(filename string) (*Mint, error) {
 }
 
 // sign all mint epochs in mint
-func (m *Mint) sign() error {
-	for _, e := range m.MintEpochs {
+func (m *Mint) sign(start int) error {
+	for i := start; i < len(m.MintEpochs); i++ {
+		e := m.MintEpochs[i]
 		if err := e.sign(&m.MintIdentityKey); err != nil {
 			return err
 		}

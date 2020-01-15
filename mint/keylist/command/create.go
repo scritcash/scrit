@@ -62,13 +62,13 @@ func create(
 		return err
 	}
 	// save private key list
-	if err := mint.Save(privFilename); err != nil {
+	if err := mint.Save(privFilename, 0700); err != nil {
 		return err
 	}
 	// prune private keys
 	mint.PrunePrivKeys()
 	// save public configuration file
-	return mint.Save(confFilename)
+	return mint.Save(confFilename, 0755)
 }
 
 // Create implements the scrit-mint 'keylist create' command.
@@ -76,7 +76,7 @@ func Create(argv0 string, args ...string) error {
 	fs := flag.NewFlagSet(argv0, flag.ContinueOnError)
 	fs.Usage = func() {
 		fmt.Fprintf(os.Stderr, "Usage: %s url [...]\n", argv0)
-		fmt.Fprintf(os.Stderr, "Create keylist for %s.\n", netconf.DefNetConfFile)
+		fmt.Fprintf(os.Stderr, "Create key list for %s.\n", netconf.DefNetConfFile)
 		fs.PrintDefaults()
 	}
 	desc := fs.String("desc", "", "Description of mint (name)")
