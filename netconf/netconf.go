@@ -11,6 +11,9 @@ const DefMintDir = "mints"
 // destruction lists.
 const DefDBCDir = "dbcs"
 
+// DefPrivKeyListDir defines the default sub-directory for private mint key lists.
+const DefPrivKeyListDir = "privkeylists"
+
 // DefDBCCreate defines the name of the list of DBCs to be created.
 const DefDBCCreate = "create.json"
 

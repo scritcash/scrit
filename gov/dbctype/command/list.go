@@ -4,7 +4,6 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"sort"
 
 	"github.com/frankbraun/codechain/secpkg"
 	"github.com/frankbraun/codechain/util/log"
@@ -12,18 +11,7 @@ import (
 )
 
 func list(net *netconf.Network) error {
-	var dbcTypes []netconf.DBCType
-	for t := range net.DBCTypes() {
-		dbcTypes = append(dbcTypes, t)
-	}
-	sort.Slice(dbcTypes, func(i, j int) bool {
-		if dbcTypes[i].Currency < dbcTypes[j].Currency ||
-			(dbcTypes[i].Currency == dbcTypes[j].Currency &&
-				dbcTypes[i].Amount < dbcTypes[j].Amount) {
-			return true
-		}
-		return false
-	})
+	dbcTypes := netconf.DBCTypeMapToSortedArray(net.DBCTypes())
 	for _, t := range dbcTypes {
 		fmt.Printf("%s\t%d\n", t.Currency, t.Amount)
 	}

@@ -21,10 +21,6 @@ func gen(net *netconf.Network, homeDir, secKey string) error {
 		return err
 	}
 	ik := netconf.NewIdentityKeyEd25519Priv(sec)
-	// make sure the 'mints' directory exists
-	if err := os.MkdirAll(netconf.DefMintDir, 0755); err != nil {
-		return err
-	}
 	filename := filepath.Join(netconf.DefMintDir, ik.MarshalID()+".json")
 	exists, err := file.Exists(filename)
 	if err != nil {

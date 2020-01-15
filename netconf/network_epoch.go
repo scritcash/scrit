@@ -19,12 +19,6 @@ type NetworkEpoch struct {
 	DBCTypesRemoved []DBCType        // DBC types removed in this epoch
 }
 
-// DBCType defines a DBC type.
-type DBCType struct {
-	Currency string // the DBC currency
-	Amount   uint64 // the amount per DBC, last 8 digits are decimal places
-}
-
 // Validate the network epoch.
 func (e *NetworkEpoch) Validate() error {
 	// m > 0

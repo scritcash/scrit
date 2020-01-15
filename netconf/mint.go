@@ -1,9 +1,9 @@
 package netconf
 
 import (
-	//"crypto/ed25519"
+	"crypto/ed25519"
+	"crypto/rand"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"time"
 
@@ -28,7 +28,75 @@ type MintEpoch struct {
 	KeyListSignatures [][]byte     // signatures of key list (identity signature last)
 }
 
-// LoadMint loads  a mint configuration from filename and return the
+func (m *Mint) generateKeys(ik *IdentityKey, n *Network) error {
+	dbcTypes := make(map[DBCType]bool)
+	for i, e := range n.NetworkEpochs {
+		for _, add := range e.DBCTypesAdded {
+			dbcTypes[add] = true
+		}
+		for _, remove := range e.DBCTypesRemoved {
+			delete(dbcTypes, remove)
+		}
+		dbcs := DBCTypeMapToSortedArray(dbcTypes)
+		for _, dbc := range dbcs {
+			pubKey, privKey, err := ed25519.GenerateKey(rand.Reader)
+			if err != nil {
+				return err
+			}
+			sk := SigningKey{
+				Currency: dbc.Currency,
+				Amount:   dbc.Amount,
+				SigAlgo:  "ed25519", // TODO
+				PubKey:   pubKey,
+				PrivKey:  privKey,
+			}
+			m.MintEpochs[i].KeyList = append(m.MintEpochs[i].KeyList, sk)
+		}
+	}
+	return m.sign()
+}
+
+func NewMint(
+	description string,
+	ik *IdentityKey,
+	urls []string,
+	n *Network,
+) (*Mint, error) {
+	var m Mint
+	m.Description = description
+	m.MintIdentityKey = *ik
+	for _, ne := range n.NetworkEpochs {
+		me := MintEpoch{
+			SignStart:   ne.SignStart,
+			SignEnd:     ne.SignEnd,
+			ValidateEnd: ne.ValidateEnd,
+		}
+		m.MintEpochs = append(m.MintEpochs, me)
+	}
+	m.URLs = urls
+	if err := m.generateKeys(ik, n); err != nil {
+		return nil, err
+	}
+	return &m, nil
+}
+
+func (m *Mint) PrunePrivKeys() {
+	for _, e := range m.MintEpochs {
+		for _, k := range e.KeyList {
+			k.PrivKey = nil
+		}
+	}
+}
+
+func (m *Mint) Save(filename string) error {
+	jsn, err := json.MarshalIndent(m, "", "  ")
+	if err != nil {
+		panic(err) // should never happen
+	}
+	return ioutil.WriteFile(filename, jsn, 0700)
+}
+
+// LoadMint loads a mint configuration from filename and return the
 // Mint struct.
 func LoadMint(filename string) (*Mint, error) {
 	data, err := ioutil.ReadFile(filename)
@@ -39,19 +107,21 @@ func LoadMint(filename string) (*Mint, error) {
 	if err := json.Unmarshal(data, &mint); err != nil {
 		return nil, err
 	}
-
-	// TODO
-	for _, me := range mint.MintEpochs {
-		if err := me.Sign(&mint.MintIdentityKey); err != nil {
-			return nil, err
-		}
-	}
-
 	return &mint, err
 }
 
-// Sign mint epoch.
-func (me *MintEpoch) Sign(ik *IdentityKey) error {
+// sign all mint epochs in mint
+func (m *Mint) sign() error {
+	for _, e := range m.MintEpochs {
+		if err := e.sign(&m.MintIdentityKey); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// sign mint epoch.
+func (me *MintEpoch) sign(ik *IdentityKey) error {
 	encodingScheme := []interface{}{
 		[]byte(ik.SigAlgo),
 		ik.PubKey,
@@ -71,20 +141,17 @@ func (me *MintEpoch) Sign(ik *IdentityKey) error {
 	if err != nil {
 		return err
 	}
-	fmt.Printf("size=%d\n", size)
 	buf := make([]byte, size)
-	_, err = binencode.Encode(buf, encodingScheme...)
+	enc, err := binencode.Encode(buf, encodingScheme...)
 	if err != nil {
 		return err
 	}
-	/*
-		for _, k := range me.KeyList {
-			sig := ed25519.Sign(k.privKey, enc)
-			me.KeyListSignatures = append(me.KeyListSignatures, sig)
-		}
-		sig := ed25519.Sign(ik.privKey, enc)
+	for _, k := range me.KeyList {
+		sig := ed25519.Sign(k.PrivKey, enc)
 		me.KeyListSignatures = append(me.KeyListSignatures, sig)
-	*/
+	}
+	sig := ed25519.Sign(ik.privKey, enc)
+	me.KeyListSignatures = append(me.KeyListSignatures, sig)
 	return nil
 }
 

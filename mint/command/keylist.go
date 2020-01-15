@@ -9,7 +9,8 @@ import (
 )
 
 func usageKeyList(cmd string) error {
-	fmt.Fprintf(os.Stderr, "Usage: %s gen\n", cmd)
+	fmt.Fprintf(os.Stderr, "Usage: %s create\n", cmd)
+	fmt.Fprintf(os.Stderr, "       %s gen\n", cmd)
 	return flag.ErrHelp
 }
 
@@ -21,6 +22,8 @@ func KeyList(argv0 string, args ...string) error {
 	newArgv0 := argv0 + " " + args[0]
 	newArgs := args[1:]
 	switch args[0] {
+	case "create":
+		return command.Create(newArgv0, newArgs...)
 	case "gen":
 		return command.Gen(newArgv0, newArgs...)
 	default:
