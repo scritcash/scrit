@@ -3,32 +3,18 @@ package command
 import (
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"os"
-	"path/filepath"
 
 	"github.com/frankbraun/codechain/secpkg"
-	"github.com/frankbraun/codechain/util/def"
 	"github.com/frankbraun/codechain/util/log"
 	"github.com/frankbraun/codechain/util/seckey"
+	"github.com/scritcash/scrit/mint/identity"
 	"github.com/scritcash/scrit/netconf"
 	"github.com/scritcash/scrit/util/homedir"
 )
 
-func identity(homeDir, secKey string) error {
-	if secKey == "" {
-		secretDir := filepath.Join(homeDir, def.SecretsSubDir)
-		files, err := ioutil.ReadDir(secretDir)
-		if err != nil {
-			return err
-		}
-		if len(files) > 1 {
-			return fmt.Errorf("directory '%s' contains more than one secret file, use option -s",
-				secretDir)
-		}
-		secKey = filepath.Join(secretDir, files[0].Name())
-	}
-	sec, _, comment, err := seckey.Read(secKey)
+func showIdentity(homeDir, secKey string) error {
+	sec, _, comment, err := identity.Load(homeDir, secKey)
 	if err != nil {
 		return err
 	}
@@ -55,7 +41,7 @@ func Identity(argv0 string, args ...string) error {
 		log.Std = log.NewStd(os.Stdout)
 	}
 	homeDir := homedir.ScritMint()
-	if err := seckey.Check(homedir.ScritMint(), *secKey); err != nil {
+	if err := seckey.Check(homeDir, *secKey); err != nil {
 		return err
 	}
 	if fs.NArg() != 0 {
@@ -65,5 +51,5 @@ func Identity(argv0 string, args ...string) error {
 	if err := secpkg.UpToDate("scrit"); err != nil {
 		return err
 	}
-	return identity(homeDir, *secKey)
+	return showIdentity(homeDir, *secKey)
 }

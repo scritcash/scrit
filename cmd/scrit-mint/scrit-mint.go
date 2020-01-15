@@ -31,6 +31,8 @@ func main() {
 		err = command.KeyFile(argv0, args...)
 	case "identity":
 		err = command.Identity(argv0, args...)
+	case "keylist":
+		err = command.KeyList(argv0, args...)
 	default:
 		usage()
 	}
