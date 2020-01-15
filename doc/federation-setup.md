@@ -39,4 +39,8 @@ Define the second signing epoch
 
     $ scrit-gov epoch add
 
+Now each of the three mints creates their key list
+
+    $ scrit-mint keylist create -desc mint_name https://mint.example.com
+
 To be continued...

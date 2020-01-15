@@ -13,19 +13,19 @@ import (
 // Mint defines the key list of a single mint for all epochs and where to
 // reach the mint.
 type Mint struct {
-	Description     string      // description of mint (name)
-	MintIdentityKey IdentityKey // identity key of mint
-	MintEpochs      []MintEpoch // corresponding to global epochs
-	URLs            []string    // how to reach the mint
+	Description     string       // description of mint (name)
+	MintIdentityKey IdentityKey  // identity key of mint
+	MintEpochs      []*MintEpoch // corresponding to global epochs
+	URLs            []string     // how to reach the mint
 }
 
 // MintEpoch defines the key list of a single mint for a single epoch.
 type MintEpoch struct {
-	SignStart         time.Time    // start of signing epoch
-	SignEnd           time.Time    // end of signing epoch
-	ValidateEnd       time.Time    // end of validation epoch
-	KeyList           []SigningKey // the key list
-	KeyListSignatures [][]byte     // signatures of key list (identity signature last)
+	SignStart         time.Time     // start of signing epoch
+	SignEnd           time.Time     // end of signing epoch
+	ValidateEnd       time.Time     // end of validation epoch
+	KeyList           []*SigningKey // the key list
+	KeyListSignatures [][]byte      // signatures of key list (identity signature last)
 }
 
 func (m *Mint) generateKeys(ik *IdentityKey, n *Network) error {
@@ -43,7 +43,7 @@ func (m *Mint) generateKeys(ik *IdentityKey, n *Network) error {
 			if err != nil {
 				return err
 			}
-			sk := SigningKey{
+			sk := &SigningKey{
 				Currency: dbc.Currency,
 				Amount:   dbc.Amount,
 				SigAlgo:  "ed25519", // TODO
@@ -66,7 +66,7 @@ func NewMint(
 	m.Description = description
 	m.MintIdentityKey = *ik
 	for _, ne := range n.NetworkEpochs {
-		me := MintEpoch{
+		me := &MintEpoch{
 			SignStart:   ne.SignStart,
 			SignEnd:     ne.SignEnd,
 			ValidateEnd: ne.ValidateEnd,

@@ -14,6 +14,7 @@ import (
 	scritDBCType "github.com/scritcash/scrit/gov/dbctype/command"
 	scritEpoch "github.com/scritcash/scrit/gov/epoch/command"
 	scritMint "github.com/scritcash/scrit/mint/command"
+	scritKeyList "github.com/scritcash/scrit/mint/keylist/command"
 	"github.com/scritcash/scrit/netconf"
 )
 
@@ -23,7 +24,7 @@ func TestFederationSetup(t *testing.T) {
 	if err != nil {
 		t.Fatalf("ioutil.TempDir() failed: %v", err)
 	}
-	defer os.RemoveAll(tmpdir)
+	//defer os.RemoveAll(tmpdir)
 
 	// create separate mint directories
 	mint1dir := filepath.Join(tmpdir, "mint1")
@@ -166,6 +167,26 @@ func TestFederationSetup(t *testing.T) {
 	// define the second signing epoch
 	err = scritEpoch.Add("scrit-gov epoch add")
 	if err != nil {
+		t.Error(err)
+	}
+
+	// create key lists
+	if err := os.Setenv("SCRIT-MINTHOMEDIR", mint1dir); err != nil {
+		t.Error(err)
+	}
+	if err := scritKeyList.Create("scrit-mint keylist create", "-desc", "mint1", "https://mint1.example.com"); err != nil {
+		t.Error(err)
+	}
+	if err := os.Setenv("SCRIT-MINTHOMEDIR", mint2dir); err != nil {
+		t.Error(err)
+	}
+	if err := scritKeyList.Create("scrit-mint keylist create", "-desc", "mint2", "https://mint2.example.net"); err != nil {
+		t.Error(err)
+	}
+	if err := os.Setenv("SCRIT-MINTHOMEDIR", mint3dir); err != nil {
+		t.Error(err)
+	}
+	if err := scritKeyList.Create("scrit-mint keylist create", "-desc", "mint3", "https://mint3.example.org"); err != nil {
 		t.Error(err)
 	}
 

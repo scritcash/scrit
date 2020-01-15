@@ -46,14 +46,14 @@ func create(
 		return err
 	}
 	if exists {
-		fmt.Errorf("file '%s' exists already", privFilename)
+		return fmt.Errorf("file '%s' exists already", privFilename)
 	}
 	exists, err = file.Exists(confFilename)
 	if err != nil {
 		return err
 	}
 	if exists {
-		fmt.Errorf("file '%s' exists already", confFilename)
+		return fmt.Errorf("file '%s' exists already", confFilename)
 	}
 
 	// create key list and configuration file
@@ -109,6 +109,5 @@ func Create(argv0 string, args ...string) error {
 	if err := net.Validate(); err != nil {
 		return err
 	}
-	fmt.Println(net.Marshal())
 	return create(net, homeDir, *secKey, *desc, fs.Args())
 }
