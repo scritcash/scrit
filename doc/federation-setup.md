@@ -48,4 +48,31 @@ Now each of the three mints extend their key lists (can be skipped if
 
     $ scrit-mint keylist extend
 
+Now the configuration directory for the federation looks like this:
+
+    $ tree
+    .
+    ├── federation.json
+    └── mints
+        ├── ed25519-boVnUGMNKkI1Pe72m8Kf_9KljL4DBvsOGxbr1wi9flo.json
+        ├── ed25519-er0Phn1PjBzbz3gBUEbFQUIbexZxufELZyzCyfT4A5U.json
+        └── ed25519-vVqGX7eEyH5DNxO_UHm2k8iJAvf-NNv2g1UbZnTnu44.json
+
+With `federation.json` generally defining the network (including the
+siginig epochs, DBC types, and mints) and a key list for each individual
+mint in the `mints` subdirectory.
+
+This directory structure would typically be checked into a Codechain
+with the mint identity keys as signers and the same quorum for changes
+(2-of-3 in this example).
+
+This Scrit federation config directory is then distributed and
+automatically updated via Codechain's `secpkg` tool to Scrit wallet
+users.
+
+To test a configuration a user would execute the following in the
+configuration directory:
+
+    $ scrit-engine validateconf
+
 To be continued...

@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"bytes"
-	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -10,12 +9,12 @@ import (
 
 	"github.com/frankbraun/codechain/command"
 	"github.com/frankbraun/codechain/util/seckey"
+	scritEngine "github.com/scritcash/scrit/engine/command"
 	scritGov "github.com/scritcash/scrit/gov/command"
 	scritDBCType "github.com/scritcash/scrit/gov/dbctype/command"
 	scritEpoch "github.com/scritcash/scrit/gov/epoch/command"
 	scritMint "github.com/scritcash/scrit/mint/command"
 	scritKeyList "github.com/scritcash/scrit/mint/keylist/command"
-	"github.com/scritcash/scrit/netconf"
 )
 
 // Test setting up a federation of Scrit mints (see doc/federation-setup.md).
@@ -210,18 +209,12 @@ func TestFederationSetup(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	// load, validate, and display network configuration
-	n, err := netconf.LoadNetwork(netconf.DefNetConfFile)
-	if err != nil {
+	// test configuration
+	if err := scritEngine.ValidateConf("scrit-engine validateconf"); err != nil {
 		t.Fatal(err)
 	}
-	if err := n.Validate(); err != nil {
-		t.Fatal(err)
-	}
-	fmt.Println(n.Marshal())
 
-	err = scritDBCType.List("scrit-gov dbctype list")
-	if err != nil {
+	if err := scritDBCType.List("scrit-gov dbctype list"); err != nil {
 		t.Fatal(err)
 	}
 }
