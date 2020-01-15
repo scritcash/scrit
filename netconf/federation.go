@@ -4,6 +4,7 @@ import (
 	"path/filepath"
 )
 
+// A Federation of Scrit mints.
 type Federation struct {
 	network *Network
 	mints   map[string]*Mint

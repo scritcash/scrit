@@ -10,6 +10,8 @@ type DBCType struct {
 	Amount   uint64 // the amount per DBC, last 8 digits are decimal places
 }
 
+// DBCTypeMapToSortedArray takes a map of DBCTypes and converts it to a sorted
+// array.
 func DBCTypeMapToSortedArray(m map[DBCType]bool) []DBCType {
 	var dbcTypes []DBCType
 	for t := range m {

@@ -60,6 +60,7 @@ func (m *Mint) generateKeys(ik *IdentityKey, n *Network, start int) error {
 	return m.sign(ik, start)
 }
 
+// NewMint creates a new Scrit mint.
 func NewMint(
 	description string,
 	ik *IdentityKey,
@@ -84,6 +85,7 @@ func NewMint(
 	return &m, nil
 }
 
+// Extend the mint's key list for the given network.
 func (m *Mint) Extend(ik *IdentityKey, n *Network) error {
 	start := 0
 	for i, ne := range n.NetworkEpochs {
@@ -113,6 +115,7 @@ func (m *Mint) Extend(ik *IdentityKey, n *Network) error {
 	return m.generateKeys(ik, n, start)
 }
 
+// PrunePrivKeys prunes all private keys from the given mint configuration.
 func (m *Mint) PrunePrivKeys() {
 	for _, e := range m.MintEpochs {
 		for _, k := range e.KeyList {
@@ -121,6 +124,7 @@ func (m *Mint) PrunePrivKeys() {
 	}
 }
 
+// Save mint with perm to given filename
 func (m *Mint) Save(filename string, perm os.FileMode) error {
 	jsn, err := json.MarshalIndent(m, "", "  ")
 	if err != nil {
@@ -212,7 +216,7 @@ func (me *MintEpoch) Verify(ik *IdentityKey) error {
 }
 
 // Validate the mint configuration.
-func (mint *Mint) Validate() error {
+func (m *Mint) Validate() error {
 	// TODO
 	return nil
 }
