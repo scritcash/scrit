@@ -42,3 +42,6 @@ var ErrMintsOverlap = errors.New("netconf: the MintsAdded, MintsRemoved, and Min
 
 // ErrDBCTypesOverlap is returned if the sets DBCTypesAdded and DBCTypesRemoved overlap.
 var ErrDBCTypesOverlap = errors.New("netconf: the DBCTypesAdded and DBCTypesRemoved sets overlap")
+
+// ErrNoURL is returned if a mint has no defined URL.
+var ErrNoURL = errors.New("netconf: mint has no defined URL")

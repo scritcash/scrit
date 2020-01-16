@@ -174,8 +174,8 @@ func (m *Mint) sign(ik *IdentityKey, start int) error {
 	return nil
 }
 
-// sign mint epoch.
-func (me *MintEpoch) sign(ik *IdentityKey) error {
+// encode mint epoch.
+func (me *MintEpoch) encode(ik *IdentityKey) ([]byte, error) {
 	encodingScheme := []interface{}{
 		[]byte(ik.SigAlgo),
 		ik.PubKey,
@@ -193,10 +193,15 @@ func (me *MintEpoch) sign(ik *IdentityKey) error {
 	}
 	size, err := binencode.EncodeSize(encodingScheme...)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	buf := make([]byte, size)
-	enc, err := binencode.Encode(buf, encodingScheme...)
+	return binencode.Encode(buf, encodingScheme...)
+}
+
+// sign mint epoch.
+func (me *MintEpoch) sign(ik *IdentityKey) error {
+	enc, err := me.encode(ik)
 	if err != nil {
 		return err
 	}
@@ -211,12 +216,44 @@ func (me *MintEpoch) sign(ik *IdentityKey) error {
 
 // Verify mint epoch.
 func (me *MintEpoch) Verify(ik *IdentityKey) error {
-	// TODO
+	enc, err := me.encode(ik)
+	if err != nil {
+		return err
+	}
+	// check "normal" key signatures
+	for i, k := range me.KeyList {
+		if !ed25519.Verify(k.PubKey, enc, me.KeyListSignatures[i]) {
+			return errors.New("netconf: key signature doesn't verify")
+		}
+	}
+	// check identity key signature
+	if !ed25519.Verify(ik.PubKey, enc, me.KeyListSignatures[len(me.KeyList)]) {
+		return errors.New("netconf: identity key signature doesn't verify")
+	}
 	return nil
 }
 
 // Validate the mint configuration.
 func (m *Mint) Validate() error {
-	// TODO
+	// validate mint epoch transitions
+	for i := 1; i < len(m.MintEpochs); i++ {
+		// sign end i-1 == sign start i
+		if m.MintEpochs[i-1].SignEnd != m.MintEpochs[i].SignStart {
+			return ErrSignEpochWrongBoundaries
+		}
+		// validation end i-1 <= sign end i
+		if m.MintEpochs[i-1].ValidateEnd.After(m.MintEpochs[i].SignEnd) {
+			return ErrValidationLongerThanNextSigning
+		}
+	}
+
+	for _, e := range m.MintEpochs {
+		if err := e.Verify(&m.MintIdentityKey); err != nil {
+			return err
+		}
+	}
+	if len(m.URLs) == 0 {
+		return ErrNoURL
+	}
 	return nil
 }

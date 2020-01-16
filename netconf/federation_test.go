@@ -44,11 +44,11 @@ func TestFederation(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	m2, err := NewMint("mint2", ik1, []string{"https:\\mint2.example.net"}, net)
+	m2, err := NewMint("mint2", ik2, []string{"https:\\mint2.example.net"}, net)
 	if err != nil {
 		t.Fatal(err)
 	}
-	m3, err := NewMint("mint3", ik1, []string{"https:\\mint3.example.org"}, net)
+	m3, err := NewMint("mint3", ik3, []string{"https:\\mint3.example.org"}, net)
 	if err != nil {
 		t.Fatal(err)
 	}
