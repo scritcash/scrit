@@ -9,38 +9,38 @@ import (
 
 // A Federation of Scrit mints.
 type Federation struct {
-	network *Network
-	mints   map[string]*Mint
+	Network *Network         // the federation network
+	Mints   map[string]*Mint // all mints in the network
 }
 
 func (f *Federation) validate() error {
 	// for every mint we make sure the mint epochs match with the network epoch
-	for _, m := range f.mints {
+	for _, m := range f.Mints {
 		for i, e := range m.MintEpochs {
-			if e.SignStart != f.network.NetworkEpochs[i].SignStart {
+			if e.SignStart != f.Network.NetworkEpochs[i].SignStart {
 				return errors.New("netconf: signing start mismatch")
 			}
-			if e.SignEnd != f.network.NetworkEpochs[i].SignEnd {
+			if e.SignEnd != f.Network.NetworkEpochs[i].SignEnd {
 				return errors.New("netconf: signing end mismatch")
 			}
-			if e.ValidateEnd != f.network.NetworkEpochs[i].ValidateEnd {
+			if e.ValidateEnd != f.Network.NetworkEpochs[i].ValidateEnd {
 				return errors.New("netconf: validation end mismatch")
 			}
 		}
 	}
 
 	// now we make sure that in the present we have enough mint epochs (quorum)
-	i, err := f.network.CurrentEpoch()
+	i, err := f.Network.CurrentEpoch()
 	if err != nil {
 		return err
 	}
 	var q uint64
-	for _, m := range f.mints {
+	for _, m := range f.Mints {
 		if len(m.MintEpochs) > i {
 			q++
 		}
 	}
-	if q < f.network.NetworkEpochs[i].QuorumM {
+	if q < f.Network.NetworkEpochs[i].QuorumM {
 		return errors.New("netconf: not enough mints to reach quorum in present")
 	}
 
@@ -61,8 +61,8 @@ func LoadFederation(dir string) (*Federation, error) {
 	if err := n.Validate(); err != nil {
 		return nil, err
 	}
-	f.network = n
-	f.mints = make(map[string]*Mint)
+	f.Network = n
+	f.Mints = make(map[string]*Mint)
 
 	// we try to load all mints of the current signing epoch, but ignore errors
 	// f.validate() later checks that we have enough mints available
@@ -81,7 +81,7 @@ func LoadFederation(dir string) (*Federation, error) {
 			fmt.Fprintf(os.Stderr, "WARNING validating '%s' failed: %s\n", filename, err)
 			continue
 		}
-		f.mints[mn] = m
+		f.Mints[mn] = m
 	}
 	if err := f.validate(); err != nil {
 		return nil, err
