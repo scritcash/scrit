@@ -40,15 +40,15 @@ func TestFederation(t *testing.T) {
 	net := NewNetwork(2, 3, start, start.Add(def.SigningPeriod),
 		start.Add(def.SigningPeriod).Add(def.ValidationPeriod), iks)
 
-	m1, err := NewMint("mint1", ik1, []string{"https:\\mint1.example.com"}, net)
+	m1, err := NewMint("mint1", ik1, []string{"https://mint1.example.com"}, net)
 	if err != nil {
 		t.Fatal(err)
 	}
-	m2, err := NewMint("mint2", ik2, []string{"https:\\mint2.example.net"}, net)
+	m2, err := NewMint("mint2", ik2, []string{"https://mint2.example.net"}, net)
 	if err != nil {
 		t.Fatal(err)
 	}
-	m3, err := NewMint("mint3", ik3, []string{"https:\\mint3.example.org"}, net)
+	m3, err := NewMint("mint3", ik3, []string{"https://mint3.example.org"}, net)
 	if err != nil {
 		t.Fatal(err)
 	}
