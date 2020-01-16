@@ -2,6 +2,7 @@ package netconf
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -126,10 +127,15 @@ func (n *Network) HasFuture() error {
 	return nil
 }
 
-// Mints returns a map of all mints in the network.
-func (n *Network) Mints() map[string]bool {
+// CurrentMints returns a map of all mints in the network at the current time
+func (n *Network) CurrentMints() (map[string]bool, error) {
+	c, err := n.CurrentEpoch()
+	if err != nil {
+		return nil, err
+	}
 	mints := make(map[string]bool)
-	for _, e := range n.NetworkEpochs {
+	for i := 0; i <= c; i++ {
+		e := n.NetworkEpochs[i]
 		for _, add := range e.MintsAdded {
 			mints[add.MarshalID()] = true
 		}
@@ -141,7 +147,7 @@ func (n *Network) Mints() map[string]bool {
 			mints[replace.NewKey.MarshalID()] = true
 		}
 	}
-	return mints
+	return mints, nil
 }
 
 // MintsValidate validates the mint types.
@@ -287,4 +293,25 @@ func (n *Network) EpochAdd(signingPeriod, validationPeriod time.Duration) {
 // Low-level function without error checking!
 func (n *Network) SetQuorum(m uint64) {
 	n.NetworkEpochs[len(n.NetworkEpochs)-1].QuorumM = m
+}
+
+// CurrentEpoch returns the current signing epoch number or an error if no
+// such epoch exists.
+func (n *Network) CurrentEpoch() (int, error) {
+	// make sure we still have a valid signing epoch
+	i := len(n.NetworkEpochs) - 1
+	now := time.Now().UTC()
+	if now.After(n.NetworkEpochs[i].SignEnd) {
+		return 0, errors.New("netconf: no valid signing epoch found")
+	}
+	// determine current epoch
+	for ; i >= 0; i-- {
+		if now.After(n.NetworkEpochs[i].SignStart) {
+			break
+		}
+	}
+	if i < 0 {
+		i = 0
+	}
+	return i, nil
 }

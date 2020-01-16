@@ -3,8 +3,8 @@ package netconf
 import (
 	"errors"
 	"fmt"
+	"os"
 	"path/filepath"
-	"time"
 )
 
 // A Federation of Scrit mints.
@@ -29,21 +29,10 @@ func (f *Federation) validate() error {
 		}
 	}
 
-	// make sure we still have a valid signing epoch
-	i := len(f.network.NetworkEpochs) - 1
-	now := time.Now().UTC()
-	if now.After(f.network.NetworkEpochs[i].SignEnd) {
-		return errors.New("netconf: no valid signing epoch found")
-	}
-
 	// now we make sure that in the present we have enough mint epochs (quorum)
-	for ; i >= 0; i-- {
-		if now.After(f.network.NetworkEpochs[i].SignStart) {
-			break
-		}
-	}
-	if i < 0 {
-		i = 0
+	i, err := f.network.CurrentEpoch()
+	if err != nil {
+		return err
 	}
 	var q uint64
 	for _, m := range f.mints {
@@ -75,19 +64,21 @@ func LoadFederation(dir string) (*Federation, error) {
 	f.network = n
 	f.mints = make(map[string]*Mint)
 
-	// TODO: the following is not correct in all situations, we have to validate
-	// in the current signing period (and maybe later ones)
-
-	for mn := range n.Mints() {
+	// we try to load all mints of the current signing epoch, but ignore errors
+	// f.validate() later checks that we have enough mints available
+	mints, err := n.CurrentMints()
+	if err != nil {
+		return nil, err
+	}
+	for mn := range mints {
 		filename := filepath.Join(dir, DefMintDir, mn+".json")
-		fmt.Printf("loading '%s'\n", filename)
 		m, err := LoadMint(filename)
 		if err != nil {
-			return nil, err
+			fmt.Fprintf(os.Stderr, "WARNING loading '%s' failed: %s\n", filename, err)
+			continue
 		}
-		fmt.Printf("validate '%s'\n", filename)
 		if err := m.Validate(); err != nil {
-			return nil, err
+			fmt.Fprintf(os.Stderr, "WARNING validating '%s' failed: %s\n", filename, err)
 		}
 		f.mints[mn] = m
 	}
