@@ -12,11 +12,11 @@ type NetworkEpoch struct {
 	SignStart       time.Time        // start of signing epoch
 	SignEnd         time.Time        // end of signing epoch
 	ValidateEnd     time.Time        // end of validation epoch
-	MintsAdded      []IdentityKey    // mints added in this epoch
-	MintsRemoved    []IdentityKey    // mints removed in this epoch
-	MintsReplaced   []KeyReplacement // mints replaced in this epoch
-	DBCTypesAdded   []DBCType        // DBC types added in this epoch
-	DBCTypesRemoved []DBCType        // DBC types removed in this epoch
+	MintsAdded      []IdentityKey    `json:",omitempty"` // mints added in this epoch
+	MintsRemoved    []IdentityKey    `json:",omitempty"` // mints removed in this epoch
+	MintsReplaced   []KeyReplacement `json:",omitempty"` // mints replaced in this epoch
+	DBCTypesAdded   []DBCType        `json:",omitempty"` // DBC types added in this epoch
+	DBCTypesRemoved []DBCType        `json:",omitempty"` // DBC types removed in this epoch
 }
 
 // Validate the network epoch.
