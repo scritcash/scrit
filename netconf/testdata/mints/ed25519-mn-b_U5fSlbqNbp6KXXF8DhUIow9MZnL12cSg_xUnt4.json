@@ -1,0 +1,74 @@
+{
+  "Description": "mint3",
+  "MintIdentityKey": {
+    "SigAlgo": "ed25519",
+    "PubKey": "mn+b/U5fSlbqNbp6KXXF8DhUIow9MZnL12cSg/xUnt4="
+  },
+  "MintEpochs": [
+    {
+      "SignStart": "2020-01-18T00:00:00Z",
+      "SignEnd": "2020-02-17T00:00:00Z",
+      "ValidateEnd": "2020-03-18T00:00:00Z",
+      "KeyList": [
+        {
+          "Currency": "EUR",
+          "Amount": 100000000,
+          "SigAlgo": "ed25519",
+          "PubKey": "RkTeCQxCSufivPjWe440K5xbBAcHGAeiFGsO7HHFIgU="
+        },
+        {
+          "Currency": "EUR",
+          "Amount": 200000000,
+          "SigAlgo": "ed25519",
+          "PubKey": "XUPpLau1KEmUtboIPxRtuzi4Nzych1P4bBoIqG12yXk="
+        },
+        {
+          "Currency": "EUR",
+          "Amount": 500000000,
+          "SigAlgo": "ed25519",
+          "PubKey": "OfpKVx1/r7d3/149ZPdu+l/N9sEH8LU0M44ZIrDDuWg="
+        }
+      ],
+      "KeyListSignatures": [
+        "92dsr9sP38RMy+PbKlJpfITTbwbyTmJhWE4NBwvjbDex1WhhdLe7D7I98x91yZ5xmp3YvtrL6TIWKCUhpR/4Dw==",
+        "bG3sd+A/gvUJhNlD/NpqrwDA73MHsjzeDv/fnUNd5OEqV4e3C07j+N6syE9Rsq9O1pZxkvaUFhUmq1qYlkKWDA==",
+        "obMbpVnEM+Lwzp4VwTDD9km62d4kNOGKXXs3cFGNtrSwAb3Ryitse7gkqzacBjEyZJE9oA8U9Oi7IiMTcTDoBw==",
+        "+j+Q0tRLaLnDF5M0wQGBqSpTXvqvByINA3ECYIBTiz0qCqaOScSwUIPqvA6tQ7HWOOq68YDhjor+9Tm0G5JiAg=="
+      ]
+    },
+    {
+      "SignStart": "2020-02-17T00:00:00Z",
+      "SignEnd": "2020-03-18T00:00:00Z",
+      "ValidateEnd": "2020-04-17T00:00:00Z",
+      "KeyList": [
+        {
+          "Currency": "EUR",
+          "Amount": 100000000,
+          "SigAlgo": "ed25519",
+          "PubKey": "Srk8FyaxrAujDsnUQHXEj3gkNoEvc1clCfbgfU3ug2s="
+        },
+        {
+          "Currency": "EUR",
+          "Amount": 200000000,
+          "SigAlgo": "ed25519",
+          "PubKey": "ms0c57jpVub/hF+RBQ2T2JuxH4CVSkpmiQrBwI/S0Uw="
+        },
+        {
+          "Currency": "EUR",
+          "Amount": 500000000,
+          "SigAlgo": "ed25519",
+          "PubKey": "d2t8twlAzaNqBvp3HvOuFq8MmKoytRS6CdVZf18nnXY="
+        }
+      ],
+      "KeyListSignatures": [
+        "r+H7L2QEzo2RwqIyzHAlCR9aXXICFFNkG1Tb/dKtGksGzlfA/KsjCh+W7Ch9JcsewMF1CB+2i5Ys4MRPW9AcCg==",
+        "swQQRAZvnhnoHLuMlcYhnVHEdrZ3cD1nETbvontSLgwSn1VLXl2ix78zPchQ0yO/C0gTrYGKjIAMDPX9kNcaDQ==",
+        "iFgQoIasSqs9MSIafANmjWZFjNX2nysUzDi17P6wPWmfSDsXfqcQg039I2I91+YV3paMkpGdfOENae/lXZShDA==",
+        "U+CZkqQK9Kv3840cUk74PtlsjyovkBugUF+K2S6+R5lXZqjwrQiyHJTLEBMbriItarApsfSLUAYW70aHxLQjBA=="
+      ]
+    }
+  ],
+  "URLs": [
+    "https://mint3.example.org"
+  ]
+}

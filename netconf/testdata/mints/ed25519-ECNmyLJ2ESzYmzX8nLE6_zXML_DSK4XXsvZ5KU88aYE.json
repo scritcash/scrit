@@ -1,0 +1,74 @@
+{
+  "Description": "mint1",
+  "MintIdentityKey": {
+    "SigAlgo": "ed25519",
+    "PubKey": "ECNmyLJ2ESzYmzX8nLE6/zXML/DSK4XXsvZ5KU88aYE="
+  },
+  "MintEpochs": [
+    {
+      "SignStart": "2020-01-18T00:00:00Z",
+      "SignEnd": "2020-02-17T00:00:00Z",
+      "ValidateEnd": "2020-03-18T00:00:00Z",
+      "KeyList": [
+        {
+          "Currency": "EUR",
+          "Amount": 100000000,
+          "SigAlgo": "ed25519",
+          "PubKey": "l3sAAHt8f1UMHl26S50/Uzu98a33Mb50xG/D08puYNo="
+        },
+        {
+          "Currency": "EUR",
+          "Amount": 200000000,
+          "SigAlgo": "ed25519",
+          "PubKey": "kwY932Dxd9q04fb/GZZY1SPzRW5P9yemPKep3ofTBPU="
+        },
+        {
+          "Currency": "EUR",
+          "Amount": 500000000,
+          "SigAlgo": "ed25519",
+          "PubKey": "2CBAC0OmXM3zZiG32Lj4ayRTRq0keiJ+j75fNC6tmv8="
+        }
+      ],
+      "KeyListSignatures": [
+        "gICK8fr7SD5wyHJ2n5GljKjIALHXg9S4OtRz7H3z8ZQFf4eriTiH0gq6X8Oa18dxTkmHIXpiN/CbIoZjZNKPBw==",
+        "KvSVovC1pDETiXigXIxpdSFKNMzvropuKAzOMTbaInbe7BZzy8rpeVEznLJstxtRNRLRexV5S+0Sxg+9xVApAQ==",
+        "02fSEEIWAHK+loulTq/vgPxZkfGzPqDXvgYq3G1/Qlg1mox80vB1lDIFyGz1OZFrE043LoZBir4k2LfZp4CUAA==",
+        "rJF/ZuQxQKUbb+kcIsPn3LKXowxnomiF/nLjPW0W+w3tLKD+SBOgeBB+uw+aIsYHP5Zc4YZFECzxgBxiAp3/DQ=="
+      ]
+    },
+    {
+      "SignStart": "2020-02-17T00:00:00Z",
+      "SignEnd": "2020-03-18T00:00:00Z",
+      "ValidateEnd": "2020-04-17T00:00:00Z",
+      "KeyList": [
+        {
+          "Currency": "EUR",
+          "Amount": 100000000,
+          "SigAlgo": "ed25519",
+          "PubKey": "Pj399UPlv+7+KlNdqIMp3rnzm5zaTF+3dGJyaI0WE7I="
+        },
+        {
+          "Currency": "EUR",
+          "Amount": 200000000,
+          "SigAlgo": "ed25519",
+          "PubKey": "eD4/pgkN1OqFhN/+B77aJSaZg9pbxALhU69e6BMY7ls="
+        },
+        {
+          "Currency": "EUR",
+          "Amount": 500000000,
+          "SigAlgo": "ed25519",
+          "PubKey": "H4g6lU8gVvSlr1ydh+c/NQnxYFmDAdEMNC/rjhSyLbs="
+        }
+      ],
+      "KeyListSignatures": [
+        "pyPp6tEWJy0K3M0wcF7d26LRLbywKBKfw3lBVo0skaTP7NugCceOD1qb5WbXwugO1IihmwVPgv4Z75NyDOmhDw==",
+        "YVX29IknqHnQ0dowoaPA88aBwgyGLwVGlmFMxMzflhvEnrgidEphVNXOwGaCoK95MLhD1j6d6hoE9jwNh3EJDQ==",
+        "JIRKILiZ+NWfyDoq6EkFzhHAFsVSE7G1BCCtBeCkLRX0gbVpO1JE1P3P1jx586xfEo0tokUgGWlqp+rACTPMCQ==",
+        "8WPahi386BDIxFay6nfidTn6Kp7TeTrWqEYLicHPAu7tyNrETyalm+StkKGI7ZmJs80h9obt9KwXl3qVMbhwBw=="
+      ]
+    }
+  ],
+  "URLs": [
+    "https://mint1.example.com"
+  ]
+}

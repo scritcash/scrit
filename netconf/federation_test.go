@@ -56,13 +56,13 @@ func TestFederation(t *testing.T) {
 	if err := net.Validate(); err != nil {
 		t.Error(err)
 	}
-	if err := m1.Validate(); err != nil {
+	if err := m1.Validate(net); err != nil {
 		t.Error(err)
 	}
-	if err := m2.Validate(); err != nil {
+	if err := m2.Validate(net); err != nil {
 		t.Error(err)
 	}
-	if err := m3.Validate(); err != nil {
+	if err := m3.Validate(net); err != nil {
 		t.Error(err)
 	}
 
@@ -80,13 +80,13 @@ func TestFederation(t *testing.T) {
 	if err := net.Validate(); err != nil {
 		t.Error(err)
 	}
-	if err := m1.Validate(); err != nil {
+	if err := m1.Validate(net); err != nil {
 		t.Error(err)
 	}
-	if err := m2.Validate(); err != nil {
+	if err := m2.Validate(net); err != nil {
 		t.Error(err)
 	}
-	if err := m3.Validate(); err != nil {
+	if err := m3.Validate(net); err != nil {
 		t.Error(err)
 	}
 
@@ -94,13 +94,13 @@ func TestFederation(t *testing.T) {
 	m2.PrunePrivKeys()
 	m3.PrunePrivKeys()
 
-	if err := m1.Validate(); err != nil {
+	if err := m1.Validate(net); err != nil {
 		t.Error(err)
 	}
-	if err := m2.Validate(); err != nil {
+	if err := m2.Validate(net); err != nil {
 		t.Error(err)
 	}
-	if err := m3.Validate(); err != nil {
+	if err := m3.Validate(net); err != nil {
 		t.Error(err)
 	}
 

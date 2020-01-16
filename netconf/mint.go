@@ -33,28 +33,29 @@ type MintEpoch struct {
 
 func (m *Mint) generateKeys(ik *IdentityKey, n *Network, start int) error {
 	dbcTypes := make(map[DBCType]bool)
-	for i := start; i < len(n.NetworkEpochs); i++ {
-		e := n.NetworkEpochs[i]
+	for i, e := range n.NetworkEpochs {
 		for _, add := range e.DBCTypesAdded {
 			dbcTypes[add] = true
 		}
 		for _, remove := range e.DBCTypesRemoved {
 			delete(dbcTypes, remove)
 		}
-		dbcs := DBCTypeMapToSortedArray(dbcTypes)
-		for _, dbc := range dbcs {
-			pubKey, privKey, err := ed25519.GenerateKey(rand.Reader)
-			if err != nil {
-				return err
+		if i >= start {
+			dbcs := DBCTypeMapToSortedArray(dbcTypes)
+			for _, dbc := range dbcs {
+				pubKey, privKey, err := ed25519.GenerateKey(rand.Reader)
+				if err != nil {
+					return err
+				}
+				sk := &SigningKey{
+					Currency: dbc.Currency,
+					Amount:   dbc.Amount,
+					SigAlgo:  "ed25519", // TODO
+					PubKey:   pubKey,
+					PrivKey:  privKey,
+				}
+				m.MintEpochs[i].KeyList = append(m.MintEpochs[i].KeyList, sk)
 			}
-			sk := &SigningKey{
-				Currency: dbc.Currency,
-				Amount:   dbc.Amount,
-				SigAlgo:  "ed25519", // TODO
-				PubKey:   pubKey,
-				PrivKey:  privKey,
-			}
-			m.MintEpochs[i].KeyList = append(m.MintEpochs[i].KeyList, sk)
 		}
 	}
 	return m.sign(ik, start)
@@ -234,7 +235,7 @@ func (me *MintEpoch) Verify(ik *IdentityKey) error {
 }
 
 // Validate the mint configuration.
-func (m *Mint) Validate() error {
+func (m *Mint) Validate(net *Network) error {
 	// validate mint epoch transitions
 	for i := 1; i < len(m.MintEpochs); i++ {
 		// sign end i-1 == sign start i
@@ -244,6 +245,30 @@ func (m *Mint) Validate() error {
 		// validation end i-1 <= sign end i
 		if m.MintEpochs[i-1].ValidateEnd.After(m.MintEpochs[i].SignEnd) {
 			return ErrValidationLongerThanNextSigning
+		}
+	}
+
+	// make sure we have the right amount of signing keys
+	// TODO: this test enforces only one siging key for each DBC type (with
+	dbcTypes := make(map[DBCType]bool)
+	for i, e := range net.NetworkEpochs {
+		for _, add := range e.DBCTypesAdded {
+			dbcTypes[add] = true
+		}
+		for _, remove := range e.DBCTypesRemoved {
+			delete(dbcTypes, remove)
+		}
+		dbcs := DBCTypeMapToSortedArray(dbcTypes)
+		if len(dbcs) != len(m.MintEpochs[i].KeyList) {
+			return errors.New("netconf: lenght of key list doesn't equal number of DBC types")
+		}
+		for j, dbc := range dbcs {
+			if dbc.Currency != m.MintEpochs[i].KeyList[j].Currency {
+				return errors.New("netconf: key currency does not match DBC type")
+			}
+			if dbc.Amount != m.MintEpochs[i].KeyList[j].Amount {
+				return errors.New("netconf: key amount does not match DBC type")
+			}
 		}
 	}
 

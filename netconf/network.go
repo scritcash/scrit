@@ -127,6 +127,24 @@ func (n *Network) HasFuture() error {
 	return nil
 }
 
+// Mints returns a map of all mints in the network in the future.
+func (n *Network) Mints() map[string]bool {
+	mints := make(map[string]bool)
+	for _, e := range n.NetworkEpochs {
+		for _, add := range e.MintsAdded {
+			mints[add.MarshalID()] = true
+		}
+		for _, remove := range e.MintsRemoved {
+			delete(mints, remove.MarshalID())
+		}
+		for _, replace := range e.MintsReplaced {
+			delete(mints, replace.OldKey.MarshalID())
+			mints[replace.NewKey.MarshalID()] = true
+		}
+	}
+	return mints
+}
+
 // CurrentMints returns a map of all mints in the network at the current time
 func (n *Network) CurrentMints() (map[string]bool, error) {
 	c, err := n.CurrentEpoch()

@@ -9,15 +9,15 @@
       "MintsAdded": [
         {
           "SigAlgo": "ed25519",
-          "PubKey": "xBc9YxqJrNS7LyHZIy/znj/DLz3HkcjKpj/z7SPMhbQ="
+          "PubKey": "ECNmyLJ2ESzYmzX8nLE6/zXML/DSK4XXsvZ5KU88aYE="
         },
         {
           "SigAlgo": "ed25519",
-          "PubKey": "Ao9yDqaq0/OU8PfcBhBp1Uqbzm/6XumYqnXKOfxWXsE="
+          "PubKey": "WS5x4aMS5kB2H7Qy7vDJyaG577rNQmE4quLvEfKRFLc="
         },
         {
           "SigAlgo": "ed25519",
-          "PubKey": "HBJ9jN6O/4gcE9W93oZraxfaG1GhDHl04sWPW1TG2ls="
+          "PubKey": "mn+b/U5fSlbqNbp6KXXF8DhUIow9MZnL12cSg/xUnt4="
         }
       ],
       "DBCTypesAdded": [

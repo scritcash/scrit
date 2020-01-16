@@ -41,7 +41,7 @@ func (f *Federation) validate() error {
 		}
 	}
 	if q < f.network.NetworkEpochs[i].QuorumM {
-		return errors.New("netconf: not enough mint to reach quorum in present")
+		return errors.New("netconf: not enough mints to reach quorum in present")
 	}
 
 	return nil
@@ -77,8 +77,9 @@ func LoadFederation(dir string) (*Federation, error) {
 			fmt.Fprintf(os.Stderr, "WARNING loading '%s' failed: %s\n", filename, err)
 			continue
 		}
-		if err := m.Validate(); err != nil {
+		if err := m.Validate(n); err != nil {
 			fmt.Fprintf(os.Stderr, "WARNING validating '%s' failed: %s\n", filename, err)
+			continue
 		}
 		f.mints[mn] = m
 	}
