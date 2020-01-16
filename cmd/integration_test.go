@@ -23,7 +23,7 @@ func TestFederationSetup(t *testing.T) {
 	if err != nil {
 		t.Fatalf("ioutil.TempDir() failed: %v", err)
 	}
-	//defer os.RemoveAll(tmpdir)
+	defer os.RemoveAll(tmpdir)
 
 	// create separate mint directories
 	mint1dir := filepath.Join(tmpdir, "mint1")

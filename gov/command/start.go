@@ -34,15 +34,6 @@ func start(
 	return net.Save(filename)
 }
 
-// by default we start tomorrow at midnight
-func startTime() string {
-	now := time.Now().UTC()
-	year, month, day := now.Date()
-	t := time.Date(year, month, day, 0, 0, 0, 0, time.UTC)
-	t = t.Add(time.Hour * 48)
-	return t.Format(time.RFC3339)
-}
-
 // Start implements the scrit-gov 'start' command.
 func Start(argv0 string, args ...string) error {
 	fs := flag.NewFlagSet(argv0, flag.ContinueOnError)
@@ -53,7 +44,8 @@ func Start(argv0 string, args ...string) error {
 	}
 	m := fs.Uint64("m", 2, "The quorum m")
 	n := fs.Uint64("n", 3, "Number of mints n")
-	startSign := fs.String("start-sign", startTime(), "Start of signing epoch")
+	startSign := fs.String("start-sign", netconf.DefStartTime().Format(time.RFC3339),
+		"Start of signing epoch")
 	signingPeriod := fs.Duration("signing-period", def.SigningPeriod, "Length of signing period")
 	validationPeriod := fs.Duration("validation-period", def.ValidationPeriod, "Length of validation period")
 	verbose := fs.Bool("v", false, "Be verbose")

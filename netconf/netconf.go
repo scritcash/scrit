@@ -1,6 +1,10 @@
 // Package netconf implements the Scrit network configuration.
 package netconf
 
+import (
+	"time"
+)
+
 // DefNetConfFile defines the default network configuration filename.
 const DefNetConfFile = "federation.json"
 
@@ -19,3 +23,12 @@ const DefDBCCreate = "create.json"
 
 // DefDBCDestroyed defines the name of the list of destroyed DBCs.
 const DefDBCDestroyed = "destroyed.json"
+
+// DefStartTime defines the default signing start: tomorrow at midnight.
+func DefStartTime() time.Time {
+	now := time.Now().UTC()
+	year, month, day := now.Date()
+	t := time.Date(year, month, day, 0, 0, 0, 0, time.UTC)
+	t = t.Add(time.Hour * 48)
+	return t
+}

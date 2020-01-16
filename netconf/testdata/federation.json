@@ -1,54 +1,46 @@
 {
   "NetworkEpochs": [
     {
-      "DBCTypesAdded": [
-        {
-          "Amount": 100000000,
-          "Currency": "EUR"
-        },
-        {
-          "Amount": 200000000,
-          "Currency": "EUR"
-        },
-        {
-          "Amount": 500000000,
-          "Currency": "EUR"
-        }
-      ],
-      "DBCTypesRemoved": null,
+      "QuorumM": 2,
+      "NumberOfMintsN": 3,
+      "SignStart": "2020-01-18T00:00:00Z",
+      "SignEnd": "2020-02-17T00:00:00Z",
+      "ValidateEnd": "2020-03-18T00:00:00Z",
       "MintsAdded": [
         {
-          "PubKey": "vVqGX7eEyH5DNxO/UHm2k8iJAvf+NNv2g1UbZnTnu44=",
-          "SigAlgo": "ed25519"
+          "SigAlgo": "ed25519",
+          "PubKey": "xBc9YxqJrNS7LyHZIy/znj/DLz3HkcjKpj/z7SPMhbQ="
         },
         {
-          "PubKey": "boVnUGMNKkI1Pe72m8Kf/9KljL4DBvsOGxbr1wi9flo=",
-          "SigAlgo": "ed25519"
+          "SigAlgo": "ed25519",
+          "PubKey": "Ao9yDqaq0/OU8PfcBhBp1Uqbzm/6XumYqnXKOfxWXsE="
         },
         {
-          "PubKey": "er0Phn1PjBzbz3gBUEbFQUIbexZxufELZyzCyfT4A5U=",
-          "SigAlgo": "ed25519"
+          "SigAlgo": "ed25519",
+          "PubKey": "HBJ9jN6O/4gcE9W93oZraxfaG1GhDHl04sWPW1TG2ls="
         }
       ],
-      "MintsRemoved": null,
-      "MintsReplaced": null,
-      "NumberOfMintsN": 3,
-      "QuorumM": 2,
-      "SignEnd": "2006-02-02T15:04:05Z",
-      "SignStart": "2006-01-02T15:04:05Z",
-      "ValidateEnd": "2006-03-02T15:04:05Z"
+      "DBCTypesAdded": [
+        {
+          "Currency": "EUR",
+          "Amount": 100000000
+        },
+        {
+          "Currency": "EUR",
+          "Amount": 200000000
+        },
+        {
+          "Currency": "EUR",
+          "Amount": 500000000
+        }
+      ]
     },
     {
-      "DBCTypesAdded": null,
-      "DBCTypesRemoved": null,
-      "MintsAdded": null,
-      "MintsRemoved": null,
-      "MintsReplaced": null,
-      "NumberOfMintsN": 3,
       "QuorumM": 2,
-      "SignEnd": "2006-03-02T15:04:05Z",
-      "SignStart": "2006-02-02T15:04:05Z",
-      "ValidateEnd": "2006-04-02T15:04:05Z"
+      "NumberOfMintsN": 3,
+      "SignStart": "2020-02-17T00:00:00Z",
+      "SignEnd": "2020-03-18T00:00:00Z",
+      "ValidateEnd": "2020-04-17T00:00:00Z"
     }
   ]
 }

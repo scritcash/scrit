@@ -13,6 +13,7 @@ func TestLoadNetwork(t *testing.T) {
 	if err := net.Validate(); err != nil {
 		t.Fatal(err)
 	}
+	_ = DBCTypeMapToSortedArray(net.DBCTypes())
 }
 
 func TestNetworkValidate(t *testing.T) {
