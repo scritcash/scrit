@@ -64,13 +64,10 @@ func LoadFederation(dir string) (*Federation, error) {
 	f.Network = n
 	f.Mints = make(map[string]*Mint)
 
-	// we try to load all mints of the current signing epoch, but ignore errors
-	// f.validate() later checks that we have enough mints available
-	mints, err := n.CurrentMints()
-	if err != nil {
-		return nil, err
-	}
-	for mn := range mints {
+	// we try to load all mints ever known, but ignore errors.
+	// f.validate() later checks that we have enough mints in the current signing
+	// epoch available
+	for mn := range n.AllMints() {
 		filename := filepath.Join(dir, DefMintDir, mn+".json")
 		m, err := LoadMint(filename)
 		if err != nil {

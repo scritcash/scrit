@@ -145,6 +145,21 @@ func (n *Network) Mints() map[string]bool {
 	return mints
 }
 
+// AllMints returns a map of all mints that were ever or will ever be part of
+// the network.
+func (n *Network) AllMints() map[string]bool {
+	mints := make(map[string]bool)
+	for _, e := range n.NetworkEpochs {
+		for _, add := range e.MintsAdded {
+			mints[add.MarshalID()] = true
+		}
+		for _, replace := range e.MintsReplaced {
+			mints[replace.NewKey.MarshalID()] = true
+		}
+	}
+	return mints
+}
+
 // CurrentMints returns a map of all mints in the network at the current time
 func (n *Network) CurrentMints() (map[string]bool, error) {
 	c, err := n.CurrentEpoch()

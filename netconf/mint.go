@@ -251,7 +251,8 @@ func (m *Mint) Validate(net *Network) error {
 	// make sure we have the right amount of signing keys
 	// TODO: this test enforces only one siging key for each DBC type (with
 	dbcTypes := make(map[DBCType]bool)
-	for i, e := range net.NetworkEpochs {
+	for i := 0; i < len(m.MintEpochs); i++ {
+		e := net.NetworkEpochs[i]
 		for _, add := range e.DBCTypesAdded {
 			dbcTypes[add] = true
 		}
