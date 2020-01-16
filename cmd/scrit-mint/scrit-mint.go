@@ -14,7 +14,7 @@ func usage() {
 	fmt.Fprintf(os.Stderr, "Usage: %s keygen [-s seckey.bin]\n", cmd)
 	fmt.Fprintf(os.Stderr, "       %s keyfile -s seckey.bin [-c]\n", cmd)
 	fmt.Fprintf(os.Stderr, "       %s identity [-s seckey.bin]\n", cmd)
-	fmt.Fprintf(os.Stderr, "       %s keylist -desc name [-s seckey.bin]\n", cmd)
+	fmt.Fprintf(os.Stderr, "       %s keylist\n", cmd)
 	os.Exit(2)
 }
 
