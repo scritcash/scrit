@@ -5,12 +5,33 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+
+	"github.com/frankbraun/codechain/secpkg"
+	"github.com/frankbraun/codechain/util/file"
 )
 
 // A Federation of Scrit mints.
 type Federation struct {
 	Network *Network         // the federation network
 	Mints   map[string]*Mint // all mints in the network
+}
+
+// upToDate ensures that the federation directory dir is up-to-date, if it
+// contains a .secpkg file.
+func upToDate(dir string) error {
+	fn := filepath.Join(dir, ".secpkg")
+	exists, err := file.Exists(fn)
+	if err != nil {
+		return err
+	}
+	if !exists {
+		return nil // nothing to do
+	}
+	pkg, err := secpkg.Load(fn)
+	if err != nil {
+		return err
+	}
+	return secpkg.UpToDate(pkg.Name)
 }
 
 func (f *Federation) validate() error {
@@ -55,6 +76,9 @@ func LoadFederation(dir string) (*Federation, error) {
 	fmt.Printf("loading '%s'\n", filename)
 	n, err := LoadNetwork(filename)
 	if err != nil {
+		return nil, err
+	}
+	if err := upToDate(dir); err != nil {
 		return nil, err
 	}
 	fmt.Printf("validate '%s'\n", filename)
